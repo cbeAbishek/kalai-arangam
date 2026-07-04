@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, id: wishlist.id, leadScore }, { status: 201 });
+    return NextResponse.json({ success: true, id: wishlist.id, name: wishlist.fullName, companyName: wishlist.companyName }, { status: 201 });
   } catch (error) {
     console.error("Wishlist submission error:", error);
     return NextResponse.json({ error: "Failed to submit wishlist" }, { status: 500 });

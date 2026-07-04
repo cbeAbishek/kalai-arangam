@@ -103,6 +103,12 @@ export function SiteHeader() {
             Log in
           </a> */}
           <a
+            href="/admin"
+            className="hidden items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-primary/5 hover:text-primary sm:inline-flex"
+          >
+            Admin
+          </a>
+          <a
             href="/wishlist"
             className="hidden items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 sm:inline-flex"
           >

@@ -8,10 +8,10 @@ import { WishlistSuccess } from "@/components/wishlist-success";
 
 export default function WishlistPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [leadScore, setLeadScore] = useState(0);
+  const [submitData, setSubmitData] = useState({ name: "", company: "" });
 
-  const handleSubmitSuccess = (score: number) => {
-    setLeadScore(score);
+  const handleSubmitSuccess = (name: string, companyName: string) => {
+    setSubmitData({ name, company: companyName });
     setSubmitted(true);
   };
 
@@ -20,7 +20,7 @@ export default function WishlistPage() {
       <SiteHeader />
       <main className="pt-24 pb-16">
         {submitted ? (
-          <WishlistSuccess leadScore={leadScore} />
+          <WishlistSuccess name={submitData.name} companyName={submitData.company} />
         ) : (
           <WishlistForm onSubmitSuccess={handleSubmitSuccess} />
         )}

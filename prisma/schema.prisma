@@ -55,6 +55,7 @@ model GrowWishlist {
   ipTimezone    String?
 
   leadScore     Int      @default(0)
+  role          String   @default("user")
   googleSubId   String?
 
   @@index([workEmail])

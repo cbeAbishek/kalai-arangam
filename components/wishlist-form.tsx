@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { fetchLocation, type LocationData } from "@/lib/location-client";
@@ -116,6 +117,21 @@ const GROWTH_CHANNELS = [
   "Other",
 ];
 
+const INDUSTRY_PLACEHOLDERS = [
+  "Dance Academy",
+  "Music School",
+  "Yoga Studio",
+  "Martial Arts",
+  "Tuition Centre",
+  "Photography Studio",
+  "Event Management",
+  "Wedding Planning",
+  "Swimming Academy",
+  "Art & Craft Studio",
+  "Fitness Centre",
+  "Cricket Academy",
+];
+
 export interface WishlistFormData {
   fullName: string;
   workEmail: string;
@@ -181,7 +197,7 @@ const INITIAL_DATA: WishlistFormData = {
 };
 
 interface WishlistFormProps {
-  onSubmitSuccess: (leadScore: number) => void;
+  onSubmitSuccess: (name: string, companyName: string) => void;
 }
 
 export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
@@ -274,7 +290,7 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || "Failed to submit");
 
-      onSubmitSuccess(result.leadScore);
+      onSubmitSuccess(data.fullName, data.companyName);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -336,35 +352,45 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
         })}
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
-        {step === 0 && (
-          <StepContact
-            data={data}
-            updateField={updateField}
-            authLoading={authLoading}
-            authenticated={authenticated}
-            locationLoading={locationLoading}
-            location={location}
-          />
-        )}
-        {step === 1 && (
-          <StepBusiness data={data} updateField={updateField} />
-        )}
-        {step === 2 && (
-          <StepProblems data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
-        )}
-        {step === 3 && (
-          <StepModules data={data} toggleArrayItem={toggleArrayItem} />
-        )}
-        {step === 4 && (
-          <StepFeatures data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
-        )}
-        {step === 5 && (
-          <StepPricing data={data} updateField={updateField} />
-        )}
-        {step === 6 && (
-          <StepMarketing data={data} updateField={updateField} />
-        )}
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            {step === 0 && (
+              <StepContact
+                data={data}
+                updateField={updateField}
+                authLoading={authLoading}
+                authenticated={authenticated}
+                locationLoading={locationLoading}
+                location={location}
+              />
+            )}
+            {step === 1 && (
+              <StepBusiness data={data} updateField={updateField} />
+            )}
+            {step === 2 && (
+              <StepProblems data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
+            )}
+            {step === 3 && (
+              <StepModules data={data} toggleArrayItem={toggleArrayItem} />
+            )}
+            {step === 4 && (
+              <StepFeatures data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
+            )}
+            {step === 5 && (
+              <StepPricing data={data} updateField={updateField} />
+            )}
+            {step === 6 && (
+              <StepMarketing data={data} updateField={updateField} />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {error && (
           <div className="mt-4 rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
@@ -373,37 +399,53 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-6 flex items-center justify-between gap-4">
         <Button
-          variant="ghost"
+          variant="outline"
           onClick={() => setStep((s) => s - 1)}
           disabled={step === 0}
-          className="gap-1"
+          className="h-12 rounded-xl px-6 text-sm font-medium shadow-sm transition-all hover:shadow-md"
         >
-          <ChevronLeft className="size-4" />
+          <ChevronLeft className="mr-1 size-4" />
           Back
         </Button>
 
-        <span className="text-xs text-muted-foreground">
-          {step + 1} / {STEPS.length}
-        </span>
+        <div className="flex items-center gap-1.5">
+          {STEPS.map((_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                i === step ? "w-6 bg-primary" : i < step ? "w-1.5 bg-primary/50" : "w-1.5 bg-border"
+              )}
+            />
+          ))}
+        </div>
 
         {step < STEPS.length - 1 ? (
-          <Button onClick={() => setStep((s) => s + 1)} disabled={!canProceed()} className="gap-1">
+          <Button
+            onClick={() => setStep((s) => s + 1)}
+            disabled={!canProceed()}
+            className="h-12 rounded-xl px-6 text-sm font-semibold shadow-sm transition-all hover:shadow-md bg-primary text-primary-foreground"
+          >
             Next
-            <ChevronRight className="size-4" />
+            <ChevronRight className="ml-1 size-4" />
           </Button>
         ) : (
-          <Button onClick={handleSubmit} disabled={isSubmitting} className="gap-1">
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="h-12 rounded-xl px-6 text-sm font-semibold shadow-sm transition-all hover:shadow-md bg-primary text-primary-foreground"
+          >
             {isSubmitting ? (
               <>
-                <Loader2 className="size-4 animate-spin" />
+                <Loader2 className="mr-1 size-4 animate-spin" />
                 Submitting...
               </>
             ) : (
               <>
-                <Check className="size-4" />
                 Submit
+                <Check className="ml-1 size-4" />
               </>
             )}
           </Button>
@@ -493,7 +535,9 @@ function StepContact({
         value={data.phoneNumber}
         onChange={(v) => updateField("phoneNumber", v)}
         type="tel"
-        placeholder="+91 98765 43210"
+        placeholder="9876543210"
+        maxLength={10}
+        pattern="[0-9]{10}"
       />
       <InputField
         label="Company Name"
@@ -547,17 +591,17 @@ function StepBusiness({
         <p className="mt-1 text-sm text-muted-foreground">Tell us about your business</p>
       </div>
 
-      <SelectField
+      <CustomSelect
         label="Business Type"
         value={data.businessType}
         onChange={(v) => updateField("businessType", v)}
         options={BUSINESS_TYPES}
       />
-      <InputField
+      <TypingInput
         label="Industry"
         value={data.industry}
         onChange={(v) => updateField("industry", v)}
-        placeholder="Dance, Music, Karate, Yoga..."
+        placeholders={INDUSTRY_PLACEHOLDERS}
       />
       <div className="grid grid-cols-3 gap-3">
         <InputField
@@ -589,7 +633,7 @@ function StepBusiness({
         type="number"
         placeholder="200"
       />
-      <SelectField
+      <CustomSelect
         label="Current Software"
         value={data.currentSoftware}
         onChange={(v) => updateField("currentSoftware", v)}
@@ -703,7 +747,7 @@ function StepFeatures({
         />
       </div>
 
-      <SelectField
+      <CustomSelect
         label="When are you planning to adopt new software?"
         value={data.adoptionTimeline}
         onChange={(v) => updateField("adoptionTimeline", v)}
@@ -727,14 +771,14 @@ function StepPricing({
         <p className="mt-1 text-sm text-muted-foreground">Help us shape pricing and early access</p>
       </div>
 
-      <SelectField
+      <CustomSelect
         label="Expected Monthly Budget"
         value={data.expectedBudget}
         onChange={(v) => updateField("expectedBudget", v)}
         options={PRICING_OPTIONS}
       />
 
-      <SelectField
+      <CustomSelect
         label="Approximate Monthly Revenue"
         value={data.approximateRevenueRange}
         onChange={(v) => updateField("approximateRevenueRange", v)}
@@ -799,7 +843,7 @@ function StepMarketing({
         <p className="mt-1 text-sm text-muted-foreground">Help us understand our reach</p>
       </div>
 
-      <SelectField
+      <CustomSelect
         label="How did you hear about us?"
         value={data.howDidYouHear}
         onChange={(v) => updateField("howDidYouHear", v)}
@@ -823,6 +867,8 @@ function InputField({
   type = "text",
   required,
   placeholder,
+  maxLength,
+  pattern,
 }: {
   label: string;
   value: string;
@@ -830,6 +876,8 @@ function InputField({
   type?: string;
   required?: boolean;
   placeholder?: string;
+  maxLength?: number;
+  pattern?: string;
 }) {
   return (
     <div>
@@ -839,16 +887,21 @@ function InputField({
       <input
         type={type}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          const v = e.target.value;
+          onChange(type === "tel" ? v.replace(/[^0-9]/g, "").slice(0, maxLength || 999) : v);
+        }}
         required={required}
         placeholder={placeholder}
+        maxLength={maxLength}
+        pattern={pattern}
         className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
     </div>
   );
 }
 
-function SelectField({
+function CustomSelect({
   label,
   value,
   onChange,
@@ -859,21 +912,134 @@ function SelectField({
   onChange: (v: string) => void;
   options: string[];
 }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <label className="mb-1 block text-sm font-medium">{label}</label>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={cn(
+          "flex w-full items-center justify-between rounded-xl border border-border bg-background px-4 py-2.5 text-left text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20",
+          open && "border-primary ring-2 ring-primary/20"
+        )}
+      >
+        <span className={cn(value ? "text-foreground" : "text-muted-foreground")}>
+          {value || "Select..."}
+        </span>
+        <ChevronRight
+          className={cn(
+            "size-4 text-muted-foreground transition-transform duration-200",
+            open && "rotate-90"
+          )}
+        />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="absolute z-50 mt-1 w-full overflow-hidden rounded-xl border border-border bg-card shadow-lg"
+          >
+            <div className="max-h-48 overflow-y-auto p-1">
+              {options.map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt);
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                    value === opt
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-muted text-foreground"
+                  )}
+                >
+                  {opt}
+                  {value === opt && <Check className="size-3.5" />}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function TypingInput({
+  label,
+  value,
+  onChange,
+  placeholders,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholders: string[];
+}) {
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (value) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      return;
+    }
+
+    const currentPlaceholder = placeholders[placeholderIndex];
+
+    const tick = () => {
+      if (!isDeleting) {
+        setDisplayedText(currentPlaceholder.slice(0, displayedText.length + 1));
+        if (displayedText.length + 1 === currentPlaceholder.length) {
+          timeoutRef.current = setTimeout(() => setIsDeleting(true), 1500);
+          return;
+        }
+        timeoutRef.current = setTimeout(tick, 80);
+      } else {
+        setDisplayedText(currentPlaceholder.slice(0, displayedText.length - 1));
+        if (displayedText.length - 1 === 0) {
+          setIsDeleting(false);
+          setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+          return;
+        }
+        timeoutRef.current = setTimeout(tick, 40);
+      }
+    };
+
+    timeoutRef.current = setTimeout(tick, isDeleting ? 40 : 80);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [displayedText, isDeleting, placeholderIndex, value, placeholders]);
+
   return (
     <div>
       <label className="mb-1 block text-sm font-medium">{label}</label>
-      <select
+      <input
+        type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        placeholder={value ? "" : displayedText}
         className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-      >
-        <option value="">Select...</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
+      />
     </div>
   );
 }
@@ -890,20 +1056,30 @@ function ToggleField({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-center gap-3 rounded-xl border border-border px-4 py-2.5 text-sm transition-all hover:bg-muted",
+        "flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-border px-4 py-2.5 text-sm transition-all hover:bg-muted",
         checked && "border-primary bg-primary/5"
       )}
     >
-      <div
+      <span className={cn("transition-colors", checked && "text-primary font-medium")}>
+        {label}
+      </span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-all",
-          checked ? "border-primary bg-primary" : "border-border"
+          "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 focus:ring-offset-background",
+          checked ? "bg-primary" : "bg-border"
         )}
       >
-        {checked && <Check className="size-3 text-primary-foreground" />}
-      </div>
-      {label}
+        <span
+          className={cn(
+            "pointer-events-none inline-block h-[18px] w-[18px] rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
+            checked ? "translate-x-[22px]" : "translate-x-[2px]"
+          )}
+        />
+      </button>
     </label>
   );
 }
@@ -918,29 +1094,30 @@ function CheckboxGrid({
   onToggle: (item: string) => void;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
       {options.map((option) => {
         const isSelected = selected.includes(option);
         return (
-          <button
+          <motion.button
             key={option}
             type="button"
+            whileTap={{ scale: 0.97 }}
             onClick={() => onToggle(option)}
             className={cn(
-              "flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-left text-sm transition-all hover:bg-muted",
-              isSelected && "border-primary bg-primary/5 text-primary"
+              "flex items-center gap-2.5 rounded-xl border border-border px-3 py-2.5 text-left text-sm transition-all hover:bg-muted",
+              isSelected && "border-primary bg-primary/5 text-primary shadow-sm"
             )}
           >
             <span
               className={cn(
-                "flex size-4 shrink-0 items-center justify-center rounded border-2 transition-all",
+                "flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-all",
                 isSelected ? "border-primary bg-primary" : "border-border"
               )}
             >
-              {isSelected && <Check className="size-2.5 text-primary-foreground" />}
+              {isSelected && <Check className="size-3 text-primary-foreground" />}
             </span>
-            <span className="truncate">{option}</span>
-          </button>
+            <span className="min-w-0 break-words leading-snug">{option}</span>
+          </motion.button>
         );
       })}
     </div>

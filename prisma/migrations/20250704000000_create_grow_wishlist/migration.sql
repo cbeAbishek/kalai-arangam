@@ -39,6 +39,7 @@ CREATE TABLE "GrowWishlist" (
     "ipLon" DOUBLE PRECISION,
     "ipTimezone" TEXT,
     "leadScore" INTEGER NOT NULL DEFAULT 0,
+    "role" TEXT NOT NULL DEFAULT 'user',
     "googleSubId" TEXT,
 
     CONSTRAINT "GrowWishlist_pkey" PRIMARY KEY ("id")
