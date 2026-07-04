@@ -2,7 +2,7 @@
 
 ### Product Name
 
-**KalaiArangam**
+**1grow**
 
 ### Product Category
 
@@ -12,11 +12,11 @@ Multi-Tenant SaaS ERP Platform for Training Institutes, Rental Businesses, and E
 
 # 1. Product Vision
 
-KalaiArangam is a cloud-based business management platform designed specifically for training academies, rental businesses, and event management organizations. The platform provides an integrated ecosystem that enables organizations to manage enquiries, customers, operations, scheduling, inventory, finances, communication, and reporting from a single system.
+1grow is a cloud-based business management platform designed specifically for training academies, rental businesses, and event management organizations. The platform provides an integrated ecosystem that enables organizations to manage enquiries, customers, operations, scheduling, inventory, finances, communication, and reporting from a single system.
 
 The vision is to become the leading vertical SaaS platform for the performing arts, education, rental, and event industries by offering industry-specific workflows rather than generic business software.
 
-KalaiArangam empowers business owners to digitize operations, improve customer engagement, streamline team collaboration, and make data-driven decisions while reducing administrative overhead.
+1grow empowers business owners to digitize operations, improve customer engagement, streamline team collaboration, and make data-driven decisions while reducing administrative overhead.
 
 ---
 
@@ -292,7 +292,7 @@ Each organization receives:
 
 # Success Definition
 
-KalaiArangam succeeds when a business owner can manage leads, operations, inventory, bookings, payments, teams, customers, and reporting from a single unified platform without requiring multiple disconnected software systems.
+1grow succeeds when a business owner can manage leads, operations, inventory, bookings, payments, teams, customers, and reporting from a single unified platform without requiring multiple disconnected software systems.
 
 # PRD - Product Requirements Document
 
@@ -306,7 +306,7 @@ Target Release: MVP
 
 # 1. Purpose
 
-This document defines the functional requirements, business rules, user permissions, module scope, and delivery boundaries of the KalaiArangam ERP platform.
+This document defines the functional requirements, business rules, user permissions, module scope, and delivery boundaries of the 1grow ERP platform.
 
 The system enables Training Institutes, Rental Businesses, and Event Management Companies to manage their operations through a modular SaaS platform.
 

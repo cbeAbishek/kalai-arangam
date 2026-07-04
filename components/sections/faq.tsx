@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "Do you support mobile devices?",
-    a: "kalaiArangam is mobile-first. Your team can manage attendance, bookings, payments, and tasks from any phone, tablet, or desktop.",
+    a: "1grow is mobile-first. Your team can manage attendance, bookings, payments, and tasks from any phone, tablet, or desktop.",
   },
   {
     q: "Is my data secure?",

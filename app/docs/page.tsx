@@ -10,8 +10,8 @@ import { generateMetadata as genMeta } from "@/lib/seo";
 export const metadata: Metadata = genMeta({
   title: "Documentation",
   description:
-    "Complete documentation for kalaiArangam - setup guides, module references, API docs, and more.",
-  url: "https://kalaiArangam.com/docs",
+    "Complete documentation for 1grow - setup guides, module references, API docs, and more.",
+  url: "https://1grow.com/docs",
 });
 
 export default function DocsPage() {
@@ -30,7 +30,7 @@ export default function DocsPage() {
               Documentation
             </h1>
             <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-              Everything you need to set up, configure, and use kalaiArangam.
+              Everything you need to set up, configure, and use 1grow.
             </p>
           </div>
 

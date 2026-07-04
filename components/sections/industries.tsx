@@ -44,7 +44,7 @@ export function Industries() {
         <SectionHeading
           eyebrow="Built for your industry"
           title="One platform, three industry-specific workflows"
-          description="kalaiArangam adapts to how your business actually operates - no generic templates, no compromise."
+          description="1grow adapts to how your business actually operates - no generic templates, no compromise."
         />
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">

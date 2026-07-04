@@ -1,10 +1,10 @@
 # Pricing Strategy
 
-# kalaiArangam SaaS Pricing Strategy
+# 1grow SaaS Pricing Strategy
 
 ## Overview
 
-kalaiArangam is a Multi-Tenant SaaS ERP platform designed for:
+1grow is a Multi-Tenant SaaS ERP platform designed for:
 
 - Training & Coaching Institutes
 - Rental Businesses
@@ -371,4 +371,4 @@ Focus differentiation on:
 5. AI Capabilities
 6. Enterprise Integrations
 
-Core operational features inside a purchased module should never be restricted. Customers must receive the complete workflow of the module they purchase to ensure adoption, retention, and long-term platform dependency. Based on kalaiArangam's modular SaaS architecture and business model.
+Core operational features inside a purchased module should never be restricted. Customers must receive the complete workflow of the module they purchase to ensure adoption, retention, and long-term platform dependency. Based on 1grow's modular SaaS architecture and business model.

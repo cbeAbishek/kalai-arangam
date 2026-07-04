@@ -21,10 +21,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!feature) return { title: "Feature Not Found" };
 
   return {
-    title: `${feature.name} - kalaiArangam`,
+    title: `${feature.name} - 1grow`,
     description: feature.description,
     openGraph: {
-      title: `${feature.name} - kalaiArangam`,
+      title: `${feature.name} - 1grow`,
       description: feature.tagline,
     },
   };
@@ -184,7 +184,7 @@ export default async function FeaturePage({ params }: PageProps) {
                   Ready to Transform Your {feature.category.toLowerCase()}?
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-                  Join hundreds of institutes already using kalaiArangam to
+                  Join hundreds of institutes already using 1grow to
                   streamline their operations.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">

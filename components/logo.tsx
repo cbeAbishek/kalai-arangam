@@ -11,14 +11,14 @@ export function Logo({
     <span className={cn('flex items-center gap-3', className)}>
       <img
         src="/logo.png"
-        alt="kalaiArangam"
+        alt="1grow"
         className="h-10 w-10 rounded-xl object-contain"
         width={40}
         height={40}
       />
       {showWordmark && (
         <span className="font-heading text-xl font-bold tracking-tight">
-          Kalai<span className="text-gradient">Arangam</span>
+          1<span className="text-gradient">Grow</span>
         </span>
       )}
     </span>

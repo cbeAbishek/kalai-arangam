@@ -80,7 +80,7 @@ export function HeroBase() {
 
       {/* Navbar */}
       <nav className="relative z-20 flex items-center justify-between px-4 py-4 md:px-10 md:py-6 max-w-[1440px] mx-auto w-full">
-        <a href="#top" aria-label="kalaiArangam home" className="shrink-0">
+        <a href="#top" aria-label="1grow home" className="shrink-0">
           <Logo />
         </a>
 
@@ -131,7 +131,7 @@ export function HeroBase() {
                     "3px 3px 0 #001A99, 6px 6px 0 #001A99, 9px 9px 0 #001A99, 12px 12px 0 #001A99",
                 }}
               >
-                KALAI
+                1
               </h1>
             </div>
 
@@ -145,7 +145,7 @@ export function HeroBase() {
                     "3px 3px 0 #001A99, 6px 6px 0 #001A99, 9px 9px 0 #001A99, 12px 12px 0 #001A99",
                 }}
               >
-                YARANGAM
+                Grow
               </h1>
             </div>
 

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://kalaiArangam.com/sitemap.xml',
+    sitemap: 'https://1grow.com/sitemap.xml',
   }
 }
