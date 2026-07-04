@@ -37,16 +37,28 @@ export async function POST(request: NextRequest) {
       biggestChallenge,
       adoptionTimeline,
       canScheduleDemo,
+      location: clientLocation,
     } = body;
 
     if (!fullName) {
       return NextResponse.json({ error: "Full name is required" }, { status: 400 });
     }
 
-    const forwarded = request.headers.get("x-forwarded-for");
-    const ip = forwarded?.split(",")[0]?.trim();
-
-    const location = await getLocationByIP(ip);
+    let location;
+    if (clientLocation?.ipCity) {
+      location = {
+        ipCity: clientLocation.ipCity || null,
+        ipRegion: clientLocation.ipRegion || null,
+        ipCountry: clientLocation.ipCountry || null,
+        ipLat: clientLocation.ipLat || null,
+        ipLon: clientLocation.ipLon || null,
+        ipTimezone: clientLocation.ipTimezone || null,
+      };
+    } else {
+      const forwarded = request.headers.get("x-forwarded-for");
+      const ip = forwarded?.split(",")[0]?.trim();
+      location = await getLocationByIP(ip);
+    }
 
     const leadData = {
       workEmail,

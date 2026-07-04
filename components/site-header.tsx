@@ -95,13 +95,13 @@ export function SiteHeader() {
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           <ThemeToggle />
           <PwaInstallButton />
-          <a
+          {/* <a
             href={`${SAAS_URL}/login`}
             className="hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-primary/5 hover:text-primary sm:inline-flex"
           >
             <LogIn className="size-4" />
             Log in
-          </a>
+          </a> */}
           <a
             href="/wishlist"
             className="hidden items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 sm:inline-flex"

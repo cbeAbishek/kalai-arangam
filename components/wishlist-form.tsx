@@ -1,8 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { fetchLocation, type LocationData } from "@/lib/location-client";
+import {
+  User,
+  Building2,
+  AlertTriangle,
+  Layers,
+  Sparkles,
+  IndianRupee,
+  Megaphone,
+  ChevronRight,
+  ChevronLeft,
+  Check,
+  MapPin,
+  Loader2,
+} from "lucide-react";
+
+const STEPS = [
+  { id: "contact", label: "Contact", icon: User },
+  { id: "business", label: "Business", icon: Building2 },
+  { id: "problems", label: "Pain Points", icon: AlertTriangle },
+  { id: "modules", label: "Modules", icon: Layers },
+  { id: "features", label: "Features", icon: Sparkles },
+  { id: "pricing", label: "Pricing", icon: IndianRupee },
+  { id: "marketing", label: "Marketing", icon: Megaphone },
+];
 
 const BUSINESS_TYPES = [
   "Training Academy",
@@ -79,14 +104,6 @@ const PRICING_OPTIONS = [
   "Depends on features",
 ];
 
-const BETA_OPTIONS = [
-  "Yes, I want early access",
-  "I can provide product feedback",
-  "I want onboarding support",
-  "I want migration from Excel",
-  "I'm interested in a lifetime founder plan",
-];
-
 const GROWTH_CHANNELS = [
   "Instagram",
   "Facebook",
@@ -99,95 +116,163 @@ const GROWTH_CHANNELS = [
   "Other",
 ];
 
+export interface WishlistFormData {
+  fullName: string;
+  workEmail: string;
+  phoneNumber: string;
+  companyName: string;
+  city: string;
+  state: string;
+  businessType: string;
+  industry: string;
+  yearsInBusiness: string;
+  teamSize: string;
+  numberOfBranches: string;
+  monthlyCustomers: string;
+  currentSoftware: string;
+  currentWorkflow: string;
+  currentPainPoints: string[];
+  interestedModules: string[];
+  mostWantedFeatures: string[];
+  expectedBudget: string;
+  interestedInBeta: boolean;
+  willingToGiveFeedback: boolean;
+  interestedInLifetime: boolean;
+  howDidYouHear: string;
+  referralCode: string;
+  approximateRevenueRange: string;
+  numberOfStaff: string;
+  numberOfActiveStudents: string;
+  biggestChallenge: string;
+  adoptionTimeline: string;
+  canScheduleDemo: boolean;
+}
+
+const INITIAL_DATA: WishlistFormData = {
+  fullName: "",
+  workEmail: "",
+  phoneNumber: "",
+  companyName: "",
+  city: "",
+  state: "",
+  businessType: "",
+  industry: "",
+  yearsInBusiness: "",
+  teamSize: "",
+  numberOfBranches: "",
+  monthlyCustomers: "",
+  currentSoftware: "",
+  currentWorkflow: "",
+  currentPainPoints: [],
+  interestedModules: [],
+  mostWantedFeatures: [],
+  expectedBudget: "",
+  interestedInBeta: false,
+  willingToGiveFeedback: false,
+  interestedInLifetime: false,
+  howDidYouHear: "",
+  referralCode: "",
+  approximateRevenueRange: "",
+  numberOfStaff: "",
+  numberOfActiveStudents: "",
+  biggestChallenge: "",
+  adoptionTimeline: "",
+  canScheduleDemo: false,
+};
+
 interface WishlistFormProps {
   onSubmitSuccess: (leadScore: number) => void;
 }
 
 export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
+  const [step, setStep] = useState(0);
+  const [data, setData] = useState<WishlistFormData>(INITIAL_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentPainPoints, setCurrentPainPoints] = useState<string[]>([]);
-  const [interestedModules, setInterestedModules] = useState<string[]>([]);
-  const [mostWantedFeatures, setMostWantedFeatures] = useState<string[]>([]);
+  const [location, setLocation] = useState<LocationData | null>(null);
+  const [locationLoading, setLocationLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
-  const handleCheckboxChange = (
-    value: string,
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    max: number
-  ) => {
-    setter((prev) =>
-      prev.includes(value)
-        ? prev.filter((v) => v !== value)
-        : prev.length < max
-          ? [...prev, value]
-          : prev
-    );
+  useEffect(() => {
+    fetchLocation().then((loc) => {
+      setLocation(loc);
+      setLocationLoading(false);
+      if (loc.ipCity) {
+        setData((prev) => ({ ...prev, city: loc.ipCity || "" }));
+      }
+      if (loc.ipRegion) {
+        setData((prev) => ({ ...prev, state: loc.ipRegion || "" }));
+      }
+    });
+
+    fetch("/api/session")
+      .then((r) => r.json())
+      .then((session) => {
+        if (session.user) {
+          setAuthenticated(true);
+          setData((prev) => ({
+            ...prev,
+            fullName: session.user.name || prev.fullName,
+            workEmail: session.user.email || prev.workEmail,
+          }));
+        }
+        setAuthLoading(false);
+      })
+      .catch(() => setAuthLoading(false));
+  }, []);
+
+  const updateField = useCallback(
+    <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => {
+      setData((prev) => ({ ...prev, [field]: value }));
+    },
+    []
+  );
+
+  const toggleArrayItem = useCallback(
+    (field: "currentPainPoints" | "interestedModules" | "mostWantedFeatures", item: string, max: number) => {
+      setData((prev) => {
+        const arr = prev[field];
+        const next = arr.includes(item) ? arr.filter((v) => v !== item) : arr.length < max ? [...arr, item] : arr;
+        return { ...prev, [field]: next };
+      });
+    },
+    []
+  );
+
+  const canProceed = () => {
+    switch (step) {
+      case 0:
+        return data.fullName.trim().length > 0 && data.workEmail.trim().length > 0;
+      default:
+        return true;
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     setError(null);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const data = {
-      fullName: formData.get("fullName") as string,
-      workEmail: formData.get("workEmail") as string,
-      phoneNumber: formData.get("phoneNumber") as string,
-      companyName: formData.get("companyName") as string,
-      city: formData.get("city") as string,
-      state: formData.get("state") as string,
-      businessType: formData.get("businessType") as string,
-      industry: formData.get("industry") as string,
-      yearsInBusiness: formData.get("yearsInBusiness")
-        ? parseInt(formData.get("yearsInBusiness") as string)
-        : null,
-      teamSize: formData.get("teamSize")
-        ? parseInt(formData.get("teamSize") as string)
-        : null,
-      numberOfBranches: formData.get("numberOfBranches")
-        ? parseInt(formData.get("numberOfBranches") as string)
-        : null,
-      monthlyCustomers: formData.get("monthlyCustomers")
-        ? parseInt(formData.get("monthlyCustomers") as string)
-        : null,
-      currentSoftware: formData.get("currentSoftware") as string,
-      currentPainPoints,
-      currentWorkflow: formData.get("currentWorkflow") as string,
-      interestedModules,
-      mostWantedFeatures,
-      expectedBudget: formData.get("expectedBudget") as string,
-      interestedInBeta: formData.get("interestedInBeta") === "on",
-      willingToGiveFeedback: formData.get("willingToGiveFeedback") === "on",
-      interestedInLifetime: formData.get("interestedInLifetime") === "on",
-      howDidYouHear: formData.get("howDidYouHear") as string,
-      referralCode: formData.get("referralCode") as string,
-      approximateRevenueRange: formData.get("approximateRevenueRange") as string,
-      numberOfStaff: formData.get("numberOfStaff")
-        ? parseInt(formData.get("numberOfStaff") as string)
-        : null,
-      numberOfActiveStudents: formData.get("numberOfActiveStudents")
-        ? parseInt(formData.get("numberOfActiveStudents") as string)
-        : null,
-      biggestChallenge: formData.get("biggestChallenge") as string,
-      adoptionTimeline: formData.get("adoptionTimeline") as string,
-      canScheduleDemo: formData.get("canScheduleDemo") === "on",
-    };
-
     try {
+      const payload = {
+        ...data,
+        yearsInBusiness: data.yearsInBusiness ? parseInt(data.yearsInBusiness) : null,
+        teamSize: data.teamSize ? parseInt(data.teamSize) : null,
+        numberOfBranches: data.numberOfBranches ? parseInt(data.numberOfBranches) : null,
+        monthlyCustomers: data.monthlyCustomers ? parseInt(data.monthlyCustomers) : null,
+        numberOfStaff: data.numberOfStaff ? parseInt(data.numberOfStaff) : null,
+        numberOfActiveStudents: data.numberOfActiveStudents ? parseInt(data.numberOfActiveStudents) : null,
+        location,
+      };
+
       const res = await fetch("/api/wishlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to submit");
-      }
+      if (!res.ok) throw new Error(result.error || "Failed to submit");
 
       onSubmitSuccess(result.leadScore);
     } catch (err) {
@@ -198,181 +283,563 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4">
-      <div className="mb-10 text-center">
-        <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+    <div className="mx-auto max-w-2xl px-4">
+      <div className="mb-8 text-center">
+        <h1 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
           Join the 1grow Wishlist
         </h1>
-        <p className="mt-3 text-lg text-muted-foreground">
-          Help us build the perfect platform for your business. Get early access and shape the product.
+        <p className="mt-2 text-sm text-muted-foreground">
+          Help us build the perfect platform for your business
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-12">
-        <FormSection title="Contact Information">
-          <Input label="Full Name" name="fullName" required placeholder="John Doe" />
-          <Input label="Work Email" name="workEmail" type="email" placeholder="john@company.com" />
-          <Input label="Phone Number" name="phoneNumber" type="tel" placeholder="+91 98765 43210" />
-          <Input label="Company Name" name="companyName" placeholder="Academy Name" />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Input label="City" name="city" placeholder="Chennai" />
-            <Input label="State" name="state" placeholder="Tamil Nadu" />
-          </div>
-        </FormSection>
+      <div className="mb-8 flex items-center justify-between">
+        {STEPS.map((s, i) => {
+          const Icon = s.icon;
+          return (
+            <div key={s.id} className="flex items-center">
+              <button
+                onClick={() => i < step && setStep(i)}
+                className={cn(
+                  "flex flex-col items-center gap-1 transition-all",
+                  i === step
+                    ? "text-primary"
+                    : i < step
+                      ? "text-primary/70 cursor-pointer hover:text-primary"
+                      : "text-muted-foreground/40"
+                )}
+              >
+                <div
+                  className={cn(
+                    "flex size-9 items-center justify-center rounded-full border-2 text-xs font-semibold transition-all",
+                    i === step
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : i < step
+                        ? "border-primary/50 bg-primary/10 text-primary"
+                        : "border-border bg-background text-muted-foreground"
+                  )}
+                >
+                  {i < step ? <Check className="size-4" /> : <Icon className="size-4" />}
+                </div>
+                <span className="hidden text-[10px] font-medium sm:block">{s.label}</span>
+              </button>
+              {i < STEPS.length - 1 && (
+                <div
+                  className={cn(
+                    "mx-1 h-0.5 w-4 sm:w-8",
+                    i < step ? "bg-primary/50" : "bg-border"
+                  )}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-        <FormSection title="Business Details">
-          <Select label="Business Type" name="businessType" options={BUSINESS_TYPES} />
-          <Input label="Industry" name="industry" placeholder="Dance, Music, Karate, Yoga..." />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <Input
-              label="Years in Business"
-              name="yearsInBusiness"
-              type="number"
-              placeholder="3"
-            />
-            <Input label="Team Size" name="teamSize" type="number" placeholder="10" />
-            <Input label="Number of Branches" name="numberOfBranches" type="number" placeholder="2" />
-          </div>
-          <Input
-            label="Monthly Customers/Students"
-            name="monthlyCustomers"
-            type="number"
-            placeholder="200"
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+        {step === 0 && (
+          <StepContact
+            data={data}
+            updateField={updateField}
+            authLoading={authLoading}
+            authenticated={authenticated}
+            locationLoading={locationLoading}
+            location={location}
           />
-          <Select label="Current Software" name="currentSoftware" options={EXISTING_SOFTWARE} />
-          <Input label="Current Workflow" name="currentWorkflow" placeholder="Excel, WhatsApp, Notebook..." />
-        </FormSection>
-
-        <FormSection title="Current Pain Points (select all that apply)">
-          <CheckboxGroup
-            options={CURRENT_PROBLEMS}
-            selected={currentPainPoints}
-            onChange={(val) => handleCheckboxChange(val, setCurrentPainPoints, 12)}
-          />
-        </FormSection>
-
-        <FormSection title="Interested Modules (select all that apply)">
-          <CheckboxGroup
-            options={MODULE_INTEREST}
-            selected={interestedModules}
-            onChange={(val) => handleCheckboxChange(val, setInterestedModules, 9)}
-          />
-        </FormSection>
-
-        <FormSection title="Most Wanted Features (select up to 5)">
-          <CheckboxGroup
-            options={FEATURE_VOTING}
-            selected={mostWantedFeatures}
-            onChange={(val) => handleCheckboxChange(val, setMostWantedFeatures, 5)}
-          />
-          <p className="mt-1 text-xs text-muted-foreground">
-            {mostWantedFeatures.length}/5 selected
-          </p>
-        </FormSection>
-
-        <FormSection title="Pricing">
-          <Select
-            label="Expected Monthly Budget"
-            name="expectedBudget"
-            options={PRICING_OPTIONS}
-          />
-        </FormSection>
-
-        <FormSection title="Beta Program">
-          <div className="space-y-3">
-            <CheckboxField label="I'm interested in early access (Beta)" name="interestedInBeta" />
-            <CheckboxField label="I can provide product feedback" name="willingToGiveFeedback" />
-            <CheckboxField label="I'm interested in a lifetime founder plan" name="interestedInLifetime" />
-          </div>
-        </FormSection>
-
-        <FormSection title="Marketing">
-          <Select label="How did you hear about us?" name="howDidYouHear" options={GROWTH_CHANNELS} />
-          <Input label="Referral Code" name="referralCode" placeholder="Optional" />
-        </FormSection>
-
-        <FormSection title="Optional High-Value Questions">
-          <Select
-            label="Approximate Monthly Revenue Range"
-            name="approximateRevenueRange"
-            options={["Under ₹1 Lakh", "₹1-5 Lakhs", "₹5-20 Lakhs", "₹20 Lakhs+", "Prefer not to say"]}
-          />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Input
-              label="Number of Staff/Trainers"
-              name="numberOfStaff"
-              type="number"
-              placeholder="5"
-            />
-            <Input
-              label="Number of Active Students/Customers"
-              name="numberOfActiveStudents"
-              type="number"
-              placeholder="100"
-            />
-          </div>
-          <Textarea label="Biggest Operational Challenge" name="biggestChallenge" placeholder="Tell us what hurts most..." />
-          <Select
-            label="When are you planning to adopt new software?"
-            name="adoptionTimeline"
-            options={["Immediately", "Within 1 month", "Within 3 months", "Within 6 months", "Just exploring"]}
-          />
-          <CheckboxField label="Can we schedule a product demo?" name="canScheduleDemo" />
-        </FormSection>
-
-        {error && (
-          <div className="rounded-xl bg-destructive/10 p-4 text-sm text-destructive">{error}</div>
+        )}
+        {step === 1 && (
+          <StepBusiness data={data} updateField={updateField} />
+        )}
+        {step === 2 && (
+          <StepProblems data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
+        )}
+        {step === 3 && (
+          <StepModules data={data} toggleArrayItem={toggleArrayItem} />
+        )}
+        {step === 4 && (
+          <StepFeatures data={data} updateField={updateField} toggleArrayItem={toggleArrayItem} />
+        )}
+        {step === 5 && (
+          <StepPricing data={data} updateField={updateField} />
+        )}
+        {step === 6 && (
+          <StepMarketing data={data} updateField={updateField} />
         )}
 
+        {error && (
+          <div className="mt-4 rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
+            {error}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between">
         <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full py-6 text-base font-semibold"
+          variant="ghost"
+          onClick={() => setStep((s) => s - 1)}
+          disabled={step === 0}
+          className="gap-1"
         >
-          {isSubmitting ? "Submitting..." : "Join Wishlist"}
+          <ChevronLeft className="size-4" />
+          Back
         </Button>
-      </form>
+
+        <span className="text-xs text-muted-foreground">
+          {step + 1} / {STEPS.length}
+        </span>
+
+        {step < STEPS.length - 1 ? (
+          <Button onClick={() => setStep((s) => s + 1)} disabled={!canProceed()} className="gap-1">
+            Next
+            <ChevronRight className="size-4" />
+          </Button>
+        ) : (
+          <Button onClick={handleSubmit} disabled={isSubmitting} className="gap-1">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              <>
+                <Check className="size-4" />
+                Submit
+              </>
+            )}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
 
-function FormSection({
-  title,
-  children,
+function StepContact({
+  data,
+  updateField,
+  authLoading,
+  authenticated,
+  locationLoading,
+  location,
 }: {
-  title: string;
-  children: React.ReactNode;
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+  authLoading: boolean;
+  authenticated: boolean;
+  locationLoading: boolean;
+  location: LocationData | null;
 }) {
   return (
-    <section className="rounded-2xl border border-border bg-card p-6">
-      <h2 className="mb-4 text-lg font-semibold">{title}</h2>
-      <div className="space-y-4">{children}</div>
-    </section>
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Contact Information</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {authenticated
+            ? "Your details were pre-filled from Google. Edit if needed."
+            : "Sign in with Google to pre-fill your details, or fill manually."}
+        </p>
+      </div>
+
+      {!authLoading && !authenticated && (
+        <a
+          href="/api/auth/google"
+          className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium transition-all hover:bg-muted"
+        >
+          <svg className="size-5" viewBox="0 0 24 24">
+            <path
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+              fill="#4285F4"
+            />
+            <path
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              fill="#34A853"
+            />
+            <path
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              fill="#FBBC05"
+            />
+            <path
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              fill="#EA4335"
+            />
+          </svg>
+          Continue with Google
+        </a>
+      )}
+
+      {authLoading && (
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin" />
+          Checking authentication...
+        </div>
+      )}
+
+      <InputField
+        label="Full Name"
+        value={data.fullName}
+        onChange={(v) => updateField("fullName", v)}
+        required
+        placeholder="John Doe"
+      />
+      <InputField
+        label="Work Email"
+        value={data.workEmail}
+        onChange={(v) => updateField("workEmail", v)}
+        type="email"
+        required
+        placeholder="john@company.com"
+      />
+      <InputField
+        label="Phone Number"
+        value={data.phoneNumber}
+        onChange={(v) => updateField("phoneNumber", v)}
+        type="tel"
+        placeholder="+91 98765 43210"
+      />
+      <InputField
+        label="Company Name"
+        value={data.companyName}
+        onChange={(v) => updateField("companyName", v)}
+        placeholder="Academy Name"
+      />
+
+      <div className="rounded-xl border border-border bg-background p-3">
+        <div className="flex items-center gap-2 text-sm font-medium">
+          <MapPin className="size-4 text-primary" />
+          Detected Location
+          {locationLoading && <Loader2 className="size-3 animate-spin text-muted-foreground" />}
+        </div>
+        <div className="mt-1 text-sm text-muted-foreground">
+          {location?.ipCity && location?.ipRegion
+            ? `${location.ipCity}, ${location.ipRegion}`
+            : location?.ipCity || "Detecting..."}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <InputField
+          label="City"
+          value={data.city}
+          onChange={(v) => updateField("city", v)}
+          placeholder="Chennai"
+        />
+        <InputField
+          label="State"
+          value={data.state}
+          onChange={(v) => updateField("state", v)}
+          placeholder="Tamil Nadu"
+        />
+      </div>
+    </div>
   );
 }
 
-function Input({
+function StepBusiness({
+  data,
+  updateField,
+}: {
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Business Details</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Tell us about your business</p>
+      </div>
+
+      <SelectField
+        label="Business Type"
+        value={data.businessType}
+        onChange={(v) => updateField("businessType", v)}
+        options={BUSINESS_TYPES}
+      />
+      <InputField
+        label="Industry"
+        value={data.industry}
+        onChange={(v) => updateField("industry", v)}
+        placeholder="Dance, Music, Karate, Yoga..."
+      />
+      <div className="grid grid-cols-3 gap-3">
+        <InputField
+          label="Years in Business"
+          value={data.yearsInBusiness}
+          onChange={(v) => updateField("yearsInBusiness", v)}
+          type="number"
+          placeholder="3"
+        />
+        <InputField
+          label="Team Size"
+          value={data.teamSize}
+          onChange={(v) => updateField("teamSize", v)}
+          type="number"
+          placeholder="10"
+        />
+        <InputField
+          label="Branches"
+          value={data.numberOfBranches}
+          onChange={(v) => updateField("numberOfBranches", v)}
+          type="number"
+          placeholder="2"
+        />
+      </div>
+      <InputField
+        label="Monthly Customers/Students"
+        value={data.monthlyCustomers}
+        onChange={(v) => updateField("monthlyCustomers", v)}
+        type="number"
+        placeholder="200"
+      />
+      <SelectField
+        label="Current Software"
+        value={data.currentSoftware}
+        onChange={(v) => updateField("currentSoftware", v)}
+        options={EXISTING_SOFTWARE}
+      />
+      <InputField
+        label="Current Workflow"
+        value={data.currentWorkflow}
+        onChange={(v) => updateField("currentWorkflow", v)}
+        placeholder="Excel, WhatsApp, Notebook..."
+      />
+    </div>
+  );
+}
+
+function StepProblems({
+  data,
+  updateField,
+  toggleArrayItem,
+}: {
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+  toggleArrayItem: (field: "currentPainPoints" | "interestedModules" | "mostWantedFeatures", item: string, max: number) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Current Pain Points</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Select all challenges you face</p>
+      </div>
+
+      <CheckboxGrid
+        options={CURRENT_PROBLEMS}
+        selected={data.currentPainPoints}
+        onToggle={(item) => toggleArrayItem("currentPainPoints", item, 12)}
+      />
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Current Workflow Description</label>
+        <textarea
+          value={data.currentWorkflow}
+          onChange={(e) => updateField("currentWorkflow", e.target.value)}
+          rows={3}
+          placeholder="Describe your current workflow..."
+          className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        />
+      </div>
+    </div>
+  );
+}
+
+function StepModules({
+  data,
+  toggleArrayItem,
+}: {
+  data: WishlistFormData;
+  toggleArrayItem: (field: "currentPainPoints" | "interestedModules" | "mostWantedFeatures", item: string, max: number) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Interested Modules</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Which modules matter most to you?</p>
+      </div>
+
+      <CheckboxGrid
+        options={MODULE_INTEREST}
+        selected={data.interestedModules}
+        onToggle={(item) => toggleArrayItem("interestedModules", item, 9)}
+      />
+    </div>
+  );
+}
+
+function StepFeatures({
+  data,
+  updateField,
+  toggleArrayItem,
+}: {
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+  toggleArrayItem: (field: "currentPainPoints" | "interestedModules" | "mostWantedFeatures", item: string, max: number) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Most Wanted Features</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Select up to 5 features you need most
+        </p>
+      </div>
+
+      <CheckboxGrid
+        options={FEATURE_VOTING}
+        selected={data.mostWantedFeatures}
+        onToggle={(item) => toggleArrayItem("mostWantedFeatures", item, 5)}
+      />
+
+      <div className="text-right text-xs text-muted-foreground">
+        {data.mostWantedFeatures.length}/5 selected
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Biggest Operational Challenge</label>
+        <textarea
+          value={data.biggestChallenge}
+          onChange={(e) => updateField("biggestChallenge", e.target.value)}
+          rows={2}
+          placeholder="What hurts most about your current setup?"
+          className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        />
+      </div>
+
+      <SelectField
+        label="When are you planning to adopt new software?"
+        value={data.adoptionTimeline}
+        onChange={(v) => updateField("adoptionTimeline", v)}
+        options={["Immediately", "Within 1 month", "Within 3 months", "Within 6 months", "Just exploring"]}
+      />
+    </div>
+  );
+}
+
+function StepPricing({
+  data,
+  updateField,
+}: {
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">Pricing & Beta</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Help us shape pricing and early access</p>
+      </div>
+
+      <SelectField
+        label="Expected Monthly Budget"
+        value={data.expectedBudget}
+        onChange={(v) => updateField("expectedBudget", v)}
+        options={PRICING_OPTIONS}
+      />
+
+      <SelectField
+        label="Approximate Monthly Revenue"
+        value={data.approximateRevenueRange}
+        onChange={(v) => updateField("approximateRevenueRange", v)}
+        options={["Under ₹1 Lakh", "₹1-5 Lakhs", "₹5-20 Lakhs", "₹20 Lakhs+", "Prefer not to say"]}
+      />
+
+      <div className="grid grid-cols-2 gap-3">
+        <InputField
+          label="Staff/Trainers"
+          value={data.numberOfStaff}
+          onChange={(v) => updateField("numberOfStaff", v)}
+          type="number"
+          placeholder="5"
+        />
+        <InputField
+          label="Active Students"
+          value={data.numberOfActiveStudents}
+          onChange={(v) => updateField("numberOfActiveStudents", v)}
+          type="number"
+          placeholder="100"
+        />
+      </div>
+
+      <div className="space-y-2 pt-2">
+        <p className="text-sm font-medium">Beta Program</p>
+        <ToggleField
+          label="I want early access (Beta)"
+          checked={data.interestedInBeta}
+          onChange={(v) => updateField("interestedInBeta", v)}
+        />
+        <ToggleField
+          label="I can provide product feedback"
+          checked={data.willingToGiveFeedback}
+          onChange={(v) => updateField("willingToGiveFeedback", v)}
+        />
+        <ToggleField
+          label="I'm interested in a lifetime founder plan"
+          checked={data.interestedInLifetime}
+          onChange={(v) => updateField("interestedInLifetime", v)}
+        />
+        <ToggleField
+          label="Can we schedule a product demo?"
+          checked={data.canScheduleDemo}
+          onChange={(v) => updateField("canScheduleDemo", v)}
+        />
+      </div>
+    </div>
+  );
+}
+
+function StepMarketing({
+  data,
+  updateField,
+}: {
+  data: WishlistFormData;
+  updateField: <K extends keyof WishlistFormData>(field: K, value: WishlistFormData[K]) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold">How did you find us?</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Help us understand our reach</p>
+      </div>
+
+      <SelectField
+        label="How did you hear about us?"
+        value={data.howDidYouHear}
+        onChange={(v) => updateField("howDidYouHear", v)}
+        options={GROWTH_CHANNELS}
+      />
+
+      <InputField
+        label="Referral Code"
+        value={data.referralCode}
+        onChange={(v) => updateField("referralCode", v)}
+        placeholder="Optional"
+      />
+    </div>
+  );
+}
+
+function InputField({
   label,
-  name,
+  value,
+  onChange,
   type = "text",
   required,
   placeholder,
 }: {
   label: string;
-  name: string;
+  value: string;
+  onChange: (v: string) => void;
   type?: string;
   required?: boolean;
   placeholder?: string;
 }) {
   return (
     <div>
-      <label htmlFor={name} className="mb-1 block text-sm font-medium">
+      <label className="mb-1 block text-sm font-medium">
         {label} {required && <span className="text-destructive">*</span>}
       </label>
       <input
-        id={name}
-        name={name}
         type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
         className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -381,23 +848,23 @@ function Input({
   );
 }
 
-function Select({
+function SelectField({
   label,
-  name,
+  value,
+  onChange,
   options,
 }: {
   label: string;
-  name: string;
+  value: string;
+  onChange: (v: string) => void;
   options: string[];
 }) {
   return (
     <div>
-      <label htmlFor={name} className="mb-1 block text-sm font-medium">
-        {label}
-      </label>
+      <label className="mb-1 block text-sm font-medium">{label}</label>
       <select
-        id={name}
-        name={name}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
       >
         <option value="">Select...</option>
@@ -411,82 +878,71 @@ function Select({
   );
 }
 
-function Textarea({
+function ToggleField({
   label,
-  name,
-  placeholder,
+  checked,
+  onChange,
 }: {
   label: string;
-  name: string;
-  placeholder?: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
 }) {
   return (
-    <div>
-      <label htmlFor={name} className="mb-1 block text-sm font-medium">
-        {label}
-      </label>
-      <textarea
-        id={name}
-        name={name}
-        rows={3}
-        placeholder={placeholder}
-        className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-      />
-    </div>
+    <label
+      className={cn(
+        "flex cursor-pointer items-center gap-3 rounded-xl border border-border px-4 py-2.5 text-sm transition-all hover:bg-muted",
+        checked && "border-primary bg-primary/5"
+      )}
+    >
+      <div
+        onClick={() => onChange(!checked)}
+        className={cn(
+          "relative flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-all",
+          checked ? "border-primary bg-primary" : "border-border"
+        )}
+      >
+        {checked && <Check className="size-3 text-primary-foreground" />}
+      </div>
+      {label}
+    </label>
   );
 }
 
-function CheckboxGroup({
+function CheckboxGrid({
   options,
   selected,
-  onChange,
+  onToggle,
 }: {
   options: string[];
   selected: string[];
-  onChange: (value: string) => void;
+  onToggle: (item: string) => void;
 }) {
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-      {options.map((option) => (
-        <label
-          key={option}
-          className={cn(
-            "flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2 text-sm transition-all hover:bg-muted",
-            selected.includes(option) && "border-primary bg-primary/5 text-primary"
-          )}
-        >
-          <input
-            type="checkbox"
-            checked={selected.includes(option)}
-            onChange={() => onChange(option)}
-            className="sr-only"
-          />
-          <span
+      {options.map((option) => {
+        const isSelected = selected.includes(option);
+        return (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onToggle(option)}
             className={cn(
-              "flex size-4 shrink-0 items-center justify-center rounded border",
-              selected.includes(option)
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border"
+              "flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-left text-sm transition-all hover:bg-muted",
+              isSelected && "border-primary bg-primary/5 text-primary"
             )}
           >
-            {selected.includes(option) && (
-              <svg className="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            )}
-          </span>
-          {option}
-        </label>
-      ))}
+            <span
+              className={cn(
+                "flex size-4 shrink-0 items-center justify-center rounded border-2 transition-all",
+                isSelected ? "border-primary bg-primary" : "border-border"
+              )}
+            >
+              {isSelected && <Check className="size-2.5 text-primary-foreground" />}
+            </span>
+            <span className="truncate">{option}</span>
+          </button>
+        );
+      })}
     </div>
-  );
-}
-
-function CheckboxField({ label, name }: { label: string; name: string }) {
-  return (
-    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm transition-all hover:bg-muted">
-      <input type="checkbox" name={name} className="size-4 rounded border-border accent-primary" />
-      {label}
-    </label>
   );
 }

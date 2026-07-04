@@ -26,7 +26,7 @@ export function FinalCta() {
           </p>
           <div className="mt-9 flex items-center justify-center">
             <a
-              href="https://sarran.formaloo.co/zpwci7"
+              href="/wishlist"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-6 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:h-14 sm:w-auto sm:px-8 sm:text-lg"

@@ -24,7 +24,7 @@ export default function FeaturesPage() {
             </p>
             <div className="mt-8 flex justify-center">
               <a
-                href="https://sarran.formaloo.co/zpwci7"
+                href="/wishlist"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-playful inline-flex items-center gap-2 bg-primary text-primary-foreground"

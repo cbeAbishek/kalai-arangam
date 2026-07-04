@@ -19,7 +19,7 @@ export function NewsletterCta() {
             </p>
           </div>
         </div>
-        <a href="https://sarran.formaloo.co/zpwci7" target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex items-center justify-center rounded-xl p-4 text-sm font-medium bg-brand text-brand-foreground hover:bg-brand/90 transition-all">
+        <a href="/wishlist" target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex items-center justify-center rounded-xl p-4 text-sm font-medium bg-brand text-brand-foreground hover:bg-brand/90 transition-all">
             Join Wishlist
           </a>
       </div>
