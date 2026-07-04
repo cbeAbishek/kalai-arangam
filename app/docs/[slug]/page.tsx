@@ -74,8 +74,8 @@ export default async function DocDetailPage({
   return (
     <div className="min-h-dvh bg-background">
       <SiteHeader />
-      <main>
-        <div className="mx-auto max-w-6xl px-4 py-8">
+      <main className="pt-28 pb-24">
+        <div className="mx-auto max-w-6xl px-4">
           <Breadcrumbs items={[{ label: 'Documentation', href: '/docs' }, { label: doc.title }]} />
 
           <div className="grid gap-10 lg:grid-cols-[220px_1fr_220px]">

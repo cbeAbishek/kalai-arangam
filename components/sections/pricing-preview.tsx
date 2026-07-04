@@ -100,7 +100,7 @@ export function PricingPreview() {
                   ))}
                 </ul>
                 <a
-                  href="#contact"
+                  href="/pricing"
                   className={`mt-6 inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-6 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
                     plan.highlight
                       ? "text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30"
@@ -121,9 +121,9 @@ export function PricingPreview() {
               </div>
             </Reveal>
           ))}
-        </div>
+        </div>Share
 
-        <Reveal className="mt-8 text-center">
+        {/* <Reveal className="mt-8 text-center">
           <a
             href="/pricing"
             className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
@@ -131,7 +131,7 @@ export function PricingPreview() {
             View all pricing details
             <ArrowRight className="size-4" />
           </a>
-        </Reveal>
+        </Reveal> */}
       </div>
     </section>
   );

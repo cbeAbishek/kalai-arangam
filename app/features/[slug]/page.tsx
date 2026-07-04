@@ -188,7 +188,7 @@ export default async function FeaturePage({ params }: PageProps) {
                   streamline their operations.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <a
+                  {/* <a
                     href={`${process.env.NEXT_PUBLIC_SAAS_URL || "https://app.saas.com"}/register`}
                     className="group relative inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-6 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 sm:h-14 sm:px-8 sm:text-lg"
                     style={{
@@ -198,7 +198,7 @@ export default async function FeaturePage({ params }: PageProps) {
                   >
                     Start Free Trial
                     <ArrowRight className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 sm:size-5" />
-                  </a>
+                  </a> */}
                   <a
                     href="/contact"
                     className="inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-900 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:border-white/25 dark:hover:bg-white/15 sm:h-14 sm:px-8 sm:text-lg"
