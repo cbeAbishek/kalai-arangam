@@ -73,7 +73,7 @@ export function SiteHeader() {
             : 'bg-white/60 backdrop-blur-sm dark:bg-background/60',
         )}
       >
-        <a href="/" aria-label="1grow home" className="shrink-0">
+        <a href="/" aria-label="1Grow home" className="shrink-0">
           <Logo />
         </a>
 

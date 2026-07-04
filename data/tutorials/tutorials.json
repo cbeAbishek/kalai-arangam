@@ -1,7 +1,7 @@
 [
   {
-    "slug": "getting-started-with-1grow",
-    "title": "Getting Started with 1grow",
+    "slug": "getting-started-with-1Grow",
+    "title": "Getting Started with 1Grow",
     "description": "Set up your account, create your organization, and start managing your business in under 10 minutes.",
     "content": "This tutorial walks you through the complete setup process.",
     "difficulty": "beginner",
@@ -17,7 +17,7 @@
     "steps": [
       {
         "title": "Create Your Account",
-        "content": "Visit 1grow.com and click Start Free Trial. Enter your email, phone number, and create a password. You will receive a verification email.",
+        "content": "Visit 1Grow.com and click Start Free Trial. Enter your email, phone number, and create a password. You will receive a verification email.",
         "code": []
       },
       {
@@ -50,7 +50,7 @@
     "difficulty": "beginner",
     "estimatedTime": "15 minutes",
     "prerequisites": [
-      "getting-started-with-1grow"
+      "getting-started-with-1Grow"
     ],
     "category": "Training Management",
     "tags": [
@@ -97,7 +97,7 @@
     "difficulty": "intermediate",
     "estimatedTime": "20 minutes",
     "prerequisites": [
-      "getting-started-with-1grow"
+      "getting-started-with-1Grow"
     ],
     "category": "Rental Management",
     "tags": [

@@ -23,7 +23,7 @@ export async function generateMetadata({
   return genMeta({
     title: tutorial.title,
     description: tutorial.description,
-    url: `https://1grow.com/tutorials/${tutorial.slug}`,
+    url: `https://1Grow.com/tutorials/${tutorial.slug}`,
     type: 'article',
   })
 }
@@ -92,7 +92,7 @@ export default async function TutorialDetailPage({
               <div className="mt-4">
                 <SocialShare
                   title={tutorial!.title}
-                  url={`https://1grow.com/tutorials/${tutorial!.slug}`}
+                  url={`https://1Grow.com/tutorials/${tutorial!.slug}`}
                 />
               </div>
             </header>

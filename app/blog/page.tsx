@@ -13,8 +13,8 @@ import { Suspense } from "react";
 export const metadata: Metadata = genMeta({
   title: "Blog - Industry Insights & Product Updates",
   description:
-    "Read about training academy management, rental business operations, event planning, and product updates from 1grow.",
-  url: "https://1grow.com/blog",
+    "Read about training academy management, rental business operations, event planning, and product updates from 1Grow.",
+  url: "https://1Grow.com/blog",
 });
 
 const POSTS_PER_PAGE = 9;

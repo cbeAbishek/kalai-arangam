@@ -41,7 +41,7 @@ export default function AboutPage() {
               About
             </span>
             <h1 className="mt-5 text-balance font-heading text-4xl font-bold tracking-tight sm:text-5xl">
-              About 1grow
+              About 1Grow
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
               One platform to manage your entire academy or business - built by
@@ -53,20 +53,20 @@ export default function AboutPage() {
             <div className="rounded-3xl border border-border bg-card p-8 sm:p-10">
               <h2 className="font-heading text-2xl font-bold">Our Story</h2>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                1grow started with a simple observation: training
+                1Grow started with a simple observation: training
                 academies, rental businesses, and event companies in India still
                 run on WhatsApp messages, Excel sheets, and paper registers. As
                 these businesses grow, the chaos grows with them.
               </p>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                We built 1grow to replace that chaos with a single,
+                We built 1Grow to replace that chaos with a single,
                 intelligent platform that handles everything - from student
                 admissions and fee collection to inventory management and event
                 planning. Our goal is simple: give business owners their time
                 back so they can focus on what they do best.
               </p>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                1grow is a product of{" "}
+                1Grow is a product of{" "}
                 <a
                   href="https://nexgenads.space"
                   target="_blank"

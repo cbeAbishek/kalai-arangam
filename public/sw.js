@@ -1,4 +1,4 @@
-const CACHE_NAME = '1grow-v1'
+const CACHE_NAME = '1Grow-v1'
 
 self.addEventListener('install', () => {
   self.skipWaiting()

@@ -26,7 +26,7 @@ export function WishlistSuccess({ name, companyName }: WishlistSuccessProps) {
       </p>
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
         <p className="text-sm text-muted-foreground">
-          Warm greetings from the 1grow team! We&apos;re building something special and you&apos;re now part of our founding community.
+          Warm greetings from the 1Grow team! We&apos;re building something special and you&apos;re now part of our founding community.
         </p>
       </div>
     </div>

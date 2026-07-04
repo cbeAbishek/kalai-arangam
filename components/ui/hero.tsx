@@ -80,7 +80,7 @@ export function HeroBase() {
 
       {/* Navbar */}
       <nav className="relative z-20 flex items-center justify-between px-4 py-4 md:px-10 md:py-6 max-w-[1440px] mx-auto w-full">
-        <a href="#top" aria-label="1grow home" className="shrink-0">
+        <a href="#top" aria-label="1Grow home" className="shrink-0">
           <Logo />
         </a>
 

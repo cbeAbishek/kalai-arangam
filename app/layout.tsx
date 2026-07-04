@@ -16,9 +16,9 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "1grow - One Platform for Academies, Rentals & Events",
+  title: "1Grow - One Platform for Academies, Rentals & Events",
   description:
-    "1grow is a multi-tenant SaaS ERP that helps Training Institutes, Rental Businesses, and Event Companies manage leads, operations, teams, payments, and analytics from a single cloud platform.",
+    "1Grow is a multi-tenant SaaS ERP that helps Training Institutes, Rental Businesses, and Event Companies manage leads, operations, teams, payments, and analytics from a single cloud platform.",
   keywords: [
     "ERP",
     "SaaS",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "academy management",
   ],
   openGraph: {
-    title: "1grow - One Platform for Academies, Rentals & Events",
+    title: "1Grow - One Platform for Academies, Rentals & Events",
     description:
       "Replace spreadsheets, WhatsApp groups, and disconnected software with one intelligent business operating system.",
     type: "website",

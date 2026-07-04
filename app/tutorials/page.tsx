@@ -13,8 +13,8 @@ import { Suspense } from "react";
 export const metadata: Metadata = genMeta({
   title: "Tutorials - Step-by-Step Guides",
   description:
-    "Learn how to set up and use 1grow with step-by-step tutorials for training management, rental operations, and event planning.",
-  url: "https://1grow.com/tutorials",
+    "Learn how to set up and use 1Grow with step-by-step tutorials for training management, rental operations, and event planning.",
+  url: "https://1Grow.com/tutorials",
 });
 
 const difficultyColors = {
@@ -40,7 +40,7 @@ export default function TutorialsPage() {
             </h1>
             <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
               Step-by-step guides to help you master every feature of
-              1grow.
+              1Grow.
             </p>
           </div>
 

@@ -58,7 +58,7 @@ export const dashboardConfigs: Record<string, DashboardConfig> = {
       { color: "bg-accent-blue", label: "Enrollments" },
     ],
     bars: [42, 58, 49, 70, 64, 82, 75, 96, 88, 72, 90, 100],
-    secondaryBars: undefined,
+    secondaryBars: [28, 35, 30, 45, 38, 52, 48, 60, 55, 42, 58, 65],
   },
   branch: {
     navItems: [
@@ -279,7 +279,7 @@ export function DashboardMockup({
         <span className="size-3 rounded-full bg-amber-400/80" />
         <span className="size-3 rounded-full bg-accent-green/70" />
         <div className="ml-3 hidden flex-1 items-center rounded-xl bg-background/80 px-3 py-1 text-xs text-muted-foreground sm:flex">
-          1grow.in/dashboard
+          1Grow.in/dashboard
         </div>
       </div>
 
@@ -348,7 +348,7 @@ export function DashboardMockup({
 
           {/* Chart */}
           <div className="mt-3 rounded-xl border border-border bg-surface-alt p-4">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
               <p className="text-xs font-semibold">{c.chartLabel}</p>
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
                 {c.chartLegend.map((l) => (
@@ -359,29 +359,56 @@ export function DashboardMockup({
                 ))}
               </div>
             </div>
-            <div className="flex h-28 items-end gap-1.5">
-              {c.bars.map((h, i) => (
-                <div
-                  key={i}
-                  className="flex flex-1 flex-col justify-end gap-0.5"
-                >
-                  <div
-                    className="w-full rounded-sm bg-primary"
-                    style={{ height: `${h}%` }}
+            <div className="relative">
+              <svg viewBox="0 0 360 120" className="w-full">
+                {[0, 25, 50, 75, 100].map((y) => (
+                  <line
+                    key={y}
+                    x1="0"
+                    y1={120 - (y * 1.2)}
+                    x2="360"
+                    y2={120 - (y * 1.2)}
+                    stroke="currentColor"
+                    className="text-border"
+                    strokeWidth="0.5"
+                    strokeDasharray="2,2"
                   />
-                  {c.secondaryBars ? (
-                    <div
-                      className="w-full rounded-sm bg-accent-blue/60"
-                      style={{ height: `${c.secondaryBars[i]}%` }}
-                    />
-                  ) : (
-                    <div
-                      className="w-full rounded-sm bg-accent-blue/60"
-                      style={{ height: `${Math.max(15, h - 35)}%` }}
-                    />
-                  )}
-                </div>
-              ))}
+                ))}
+                {c.bars.map((h, i) => {
+                  const barWidth = 22;
+                  const gap = 7;
+                  const x = i * (barWidth + gap);
+                  const primaryH = h * 1.1;
+                  const secondaryH = (c.secondaryBars?.[i] ?? Math.max(15, h - 35)) * 1.1;
+                  return (
+                    <g key={i}>
+                      <rect
+                        x={x}
+                        y={120 - primaryH}
+                        width={barWidth / 2 - 1}
+                        height={primaryH}
+                        rx="2"
+                        fill="currentColor"
+                        className="text-primary"
+                      />
+                      <rect
+                        x={x + barWidth / 2 + 1}
+                        y={120 - secondaryH}
+                        width={barWidth / 2 - 1}
+                        height={secondaryH}
+                        rx="2"
+                        fill="currentColor"
+                        className="text-accent-blue"
+                      />
+                    </g>
+                  );
+                })}
+              </svg>
+              <div className="mt-1 flex gap-0">
+                {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
+                  <span key={i} className="flex-1 text-center text-[7px] text-muted-foreground sm:text-[8px]">{m}</span>
+                ))}
+              </div>
             </div>
           </div>
 

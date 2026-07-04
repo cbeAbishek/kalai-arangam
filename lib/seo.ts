@@ -10,7 +10,7 @@ export interface SeoMetadata {
 }
 
 export function generateMetadata(seo: SeoMetadata) {
-  const siteName = '1grow'
+  const siteName = '1Grow'
   const title = seo.title.includes(siteName) ? seo.title : `${seo.title} | ${siteName}`
 
   return {
@@ -43,16 +43,16 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '1grow',
-    url: 'https://1grow.com',
-    logo: 'https://1grow.com/icon.svg',
+    name: '1Grow',
+    url: 'https://1Grow.com',
+    logo: 'https://1Grow.com/icon.svg',
     description:
       'Multi-tenant SaaS ERP for Training Institutes, Rental Businesses, and Event Management Companies.',
     sameAs: [],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'support@1grow.com',
+      email: 'support@1Grow.com',
     },
   }
 }
@@ -61,11 +61,11 @@ export function generateWebSiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: '1grow',
-    url: 'https://1grow.com',
+    name: '1Grow',
+    url: 'https://1Grow.com',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://1grow.com/search?q={search_term_string}',
+      target: 'https://1Grow.com/search?q={search_term_string}',
       'query-input': 'required name=search_term_string',
     },
   }
@@ -95,10 +95,10 @@ export function generateArticleSchema(post: {
     image: post.image,
     publisher: {
       '@type': 'Organization',
-      name: '1grow',
+      name: '1Grow',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://1grow.com/icon.svg',
+        url: 'https://1Grow.com/icon.svg',
       },
     },
   }
