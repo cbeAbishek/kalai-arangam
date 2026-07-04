@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GrowWishlist {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  fullName          String
+  workEmail         String?
+  phoneNumber       String?
+  companyName       String?
+  city              String?
+  state             String?
+
+  businessType      String?
+  industry          String?
+  yearsInBusiness   Int?
+  teamSize          Int?
+  numberOfBranches  Int?
+  monthlyCustomers  Int?
+  currentSoftware   String?
+  currentPainPoints String[]
+  currentWorkflow   String?
+
+  interestedModules String[]
+  mostWantedFeatures String[]
+  expectedBudget    String?
+
+  interestedInBeta      Boolean @default(false)
+  willingToGiveFeedback Boolean @default(false)
+  interestedInLifetime  Boolean @default(false)
+
+  howDidYouHear   String?
+  referralCode    String?
+
+  approximateRevenueRange String?
+  numberOfStaff          Int?
+  numberOfActiveStudents Int?
+  biggestChallenge       String?
+  adoptionTimeline       String?
+  canScheduleDemo        Boolean @default(false)
+
+  ipCity        String?
+  ipRegion      String?
+  ipCountry     String?
+  ipLat         Float?
+  ipLon         Float?
+  ipTimezone    String?
+
+  leadScore     Int      @default(0)
+  googleSubId   String?
+
+  @@index([workEmail])
+  @@index([businessType])
+  @@index([leadScore])
+}

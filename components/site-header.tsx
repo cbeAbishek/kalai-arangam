@@ -103,9 +103,7 @@ export function SiteHeader() {
             Log in
           </a>
           <a
-            href="https://sarran.formaloo.co/zpwci7"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/wishlist"
             className="hidden items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 sm:inline-flex"
           >
             <Heart className="size-3.5" />
@@ -154,9 +152,7 @@ export function SiteHeader() {
                 Log in
               </a>
               <a
-                href="https://sarran.formaloo.co/zpwci7"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/wishlist"
                 onClick={closeMenu}
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary/90"
               >
