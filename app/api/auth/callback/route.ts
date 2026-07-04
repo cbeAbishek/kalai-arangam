@@ -7,25 +7,28 @@ export async function GET(request: NextRequest) {
   const state = searchParams.get("state");
   const error = searchParams.get("error");
 
+  const cookieHeader = request.headers.get("cookie");
+  const redirectPath = parseCookieValue(cookieHeader, "oauth_redirect") || "/wishlist";
+
   if (error) {
-    return NextResponse.redirect(new URL(`/wishlist?error=${error}`, request.url));
+    return NextResponse.redirect(new URL(`${redirectPath}?error=${error}`, request.url));
   }
 
-  const cookieState = parseCookieValue(request.headers.get("cookie"), "oauth_state");
+  const cookieState = parseCookieValue(cookieHeader, "oauth_state");
 
   if (!state || state !== cookieState) {
-    return NextResponse.redirect(new URL("/wishlist?error=state_mismatch", request.url));
+    return NextResponse.redirect(new URL(`${redirectPath}?error=state_mismatch`, request.url));
   }
 
   if (!code) {
-    return NextResponse.redirect(new URL("/wishlist?error=no_code", request.url));
+    return NextResponse.redirect(new URL(`${redirectPath}?error=no_code`, request.url));
   }
 
   try {
     const tokens = await exchangeCodeForTokens(code);
     const user = await getGoogleUser(tokens.id_token);
 
-    const response = NextResponse.redirect(new URL("/wishlist", request.url));
+    const response = NextResponse.redirect(new URL(redirectPath, request.url));
 
     response.cookies.set("session_user", JSON.stringify(user), {
       httpOnly: true,
@@ -36,9 +39,10 @@ export async function GET(request: NextRequest) {
     });
 
     response.cookies.delete("oauth_state");
+    response.cookies.delete("oauth_redirect");
 
     return response;
   } catch {
-    return NextResponse.redirect(new URL("/wishlist?error=auth_failed", request.url));
+    return NextResponse.redirect(new URL(`${redirectPath}?error=auth_failed`, request.url));
   }
 }
