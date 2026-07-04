@@ -126,6 +126,9 @@ export function SiteFooter() {
             <Link href="/refund-policy" className="hover:text-primary transition-colors">Refund Policy</Link>
           </div>
         </div>
+        <p className="whitespace-nowrap">
+          A product of <a href="https://nexgenads.space" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-medium">NexGenAds Technologies Pvt Ltd</a>
+        </p>
       </div>
     </footer>
   )
