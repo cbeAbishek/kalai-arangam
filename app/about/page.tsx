@@ -65,6 +65,18 @@ export default function AboutPage() {
                 planning. Our goal is simple: give business owners their time
                 back so they can focus on what they do best.
               </p>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                1grow is a product of{" "}
+                <a
+                  href="https://nexgenads.space"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+                >
+                  NexGenAds Technologies Pvt Ltd
+                </a>
+                , a technology company focused on building smart software solutions for Indian businesses.
+              </p>
             </div>
           </Reveal>
 
