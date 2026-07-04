@@ -62,3 +62,25 @@ model GrowWishlist {
   @@index([businessType])
   @@index([leadScore])
 }
+
+model GrowContactForm {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  subject     String
+  message     String
+
+  ipCity      String?
+  ipRegion    String?
+  ipCountry   String?
+
+  status      String   @default("new")
+
+  @@index([email])
+  @@index([status])
+}
