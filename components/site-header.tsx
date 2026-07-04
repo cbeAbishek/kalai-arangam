@@ -103,12 +103,6 @@ export function SiteHeader() {
             Log in
           </a> */}
           <a
-            href="/admin"
-            className="hidden items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-primary/5 hover:text-primary sm:inline-flex"
-          >
-            Admin
-          </a>
-          <a
             href="/wishlist"
             className="hidden items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 sm:inline-flex"
           >
@@ -149,14 +143,6 @@ export function SiteHeader() {
               </a>
             ))}
             <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
-              <a
-                href={`${SAAS_URL}/login`}
-                onClick={closeMenu}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-semibold text-foreground transition-all hover:bg-muted"
-              >
-                <LogIn className="size-4" />
-                Log in
-              </a>
               <a
                 href="/wishlist"
                 onClick={closeMenu}

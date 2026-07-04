@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
@@ -21,6 +20,7 @@ import {
   Inbox,
   CheckCircle,
   Clock,
+  Home,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -250,20 +250,21 @@ export default function AdminPage() {
   if (!user) {
     return (
       <div className="min-h-dvh bg-background">
-        <SiteHeader />
-        <main className="flex flex-col items-center justify-center pt-24 pb-16">
+        <main className="flex flex-col items-center justify-center px-4 pb-16 pt-24">
           <h1 className="font-heading text-2xl font-bold">Admin Access</h1>
           <p className="mt-2 text-muted-foreground">You need to sign in to access this page</p>
           <div className="mt-6 flex gap-3">
             <a href={`/api/auth/google?from=/admin`}>
               <Button className="gap-2">Sign in with Google</Button>
             </a>
-            <a href="/">
-              <Button variant="outline">Go to Home</Button>
-            </a>
+            <Link href="/">
+              <Button variant="outline" className="gap-2">
+                <Home className="size-4" />
+                Home
+              </Button>
+            </Link>
           </div>
         </main>
-        <SiteFooter />
       </div>
     );
   }
@@ -275,15 +276,22 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <SiteHeader />
-      <main className="pt-24 pb-16">
-        <div className="mx-auto max-w-6xl px-4">
+      <main className="px-4 pb-16 pt-8">
+        <div className="mx-auto max-w-6xl">
+          {/* Top bar */}
+          <div className="mb-6 flex items-center justify-between">
+            <Link href="/" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted">
+              <Home className="size-4" />
+              Home
+            </Link>
+            <span className="text-xs text-muted-foreground">Signed in as {user.name}</span>
+          </div>
           {/* Header */}
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="font-heading text-2xl font-bold">Admin Panel</h1>
               <p className="mt-1 text-sm text-muted-foreground">
-                {total} {activeTab === "wishlist" ? "wishlist" : "contact"} submissions &middot; Signed in as {user.name}
+                {total} {activeTab === "wishlist" ? "wishlist" : "contact"} submissions
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -628,7 +636,6 @@ export default function AdminPage() {
           )}
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }
