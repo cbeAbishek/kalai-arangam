@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { siteConfig } from "@/lib/seo-config";
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, productSchema, renderJsonLd } from "@/lib/seo";
+
+const pageTitle = "Pricing - Affordable SaaS ERP for Indian Businesses"
+const pageDescription = "1Grow pricing starts at Rs 999 per month. Choose Solo, Business, or Complete plan with a 20-day free trial. No credit card required."
+const pageUrl = `${siteConfig.url}/pricing`
+
+export const metadata: Metadata = genMeta({
+  title: pageTitle,
+  description: pageDescription,
+  url: pageUrl,
+})
 
 const plans = [
   {
@@ -26,7 +39,7 @@ const plans = [
     subtitle: "Choose Any Two Modules",
     price: 1899,
     description:
-      "Everything in Solo, plus advanced features for growing teams.",
+      "Everything in Solo, plus advanced features for growing teams and multi-branch operations.",
     features: [
       "Multi Branch Support",
       "Team Management",
@@ -50,7 +63,7 @@ const plans = [
     subtitle: "Includes All Modules",
     price: 2499,
     description:
-      "All modules with premium features, AI, and unlimited records.",
+      "All modules with premium features, AI insights, and unlimited records for growing enterprises.",
     features: [
       "All module features included",
       "AI Insights",
@@ -71,11 +84,47 @@ const plans = [
   },
 ];
 
+const schemas = [
+  webpageSchema({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    breadcrumbs: [
+      { name: "Home", url: siteConfig.url },
+      { name: "Pricing", url: pageUrl },
+    ],
+  }),
+  breadcrumbSchema([
+    { name: "Home", url: siteConfig.url },
+    { name: "Pricing", url: pageUrl },
+  ]),
+  productSchema({
+    name: "1Grow Business Plan",
+    description: "Multi-module SaaS ERP for training institutes, rental businesses, and event companies.",
+    price: 1899,
+  }),
+  productSchema({
+    name: "1Grow Complete Plan",
+    description: "All-inclusive SaaS ERP with AI insights, unlimited records, and priority support.",
+    price: 2499,
+  }),
+  productSchema({
+    name: "1Grow Solo Module",
+    description: "Single module SaaS ERP for training, rental, or event management.",
+    price: 999,
+  }),
+];
+
 const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || "https://app.saas.com";
 
 export default function PricingPage() {
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ "@context": "https://schema.org", "@graph": schemas }) }}
+        key="pricing-schemas"
+      />
       <SiteHeader />
       <main className="pt-28 pb-24">
         <div className="mx-auto max-w-6xl px-4">
@@ -88,7 +137,7 @@ export default function PricingPage() {
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
               Start with a 20-day free trial - full access, all modules, no
-              credit card required.
+              credit card required. Pay only for what you need as you scale.
             </p>
           </Reveal>
 
@@ -96,18 +145,18 @@ export default function PricingPage() {
             <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-accent-green/20 bg-accent-green/5 p-5 sm:flex-row">
               <div className="flex items-center gap-3">
                 <span className="grid size-10 place-items-center rounded-xl bg-accent-green/15 text-accent-green">
-                  <Sparkles className="size-5" />
+                  <Sparkles className="size-5" aria-hidden="true" />
                 </span>
                 <div>
                   <p className="font-heading font-bold">20-Day Free Trial</p>
                   <p className="text-sm text-muted-foreground">
-                    All Modules · Unlimited Users · Mobile Access · No credit
+                    All Modules - Unlimited Users - Mobile Access - No credit
                     card
                   </p>
                 </div>
               </div>
               <span className="inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold text-accent-green bg-accent-green/10 cursor-default">
-                🎉 Launching Soon
+                Launching Soon
               </span>
             </div>
           </Reveal>
@@ -138,7 +187,7 @@ export default function PricingPage() {
                   </p>
                   <div className="mt-5 flex items-end gap-1">
                     <span className="font-heading text-3xl font-extrabold tracking-tight">
-                      ₹{plan.price.toLocaleString("en-IN")}
+                      Rs {plan.price.toLocaleString("en-IN")}
                     </span>
                     <span className="mb-1 text-sm text-muted-foreground">
                       /month
@@ -148,7 +197,7 @@ export default function PricingPage() {
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm">
                         <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-accent-green/15 text-accent-green">
-                          <Check className="size-3" />
+                          <Check className="size-3" aria-hidden="true" />
                         </span>
                         {f}
                       </li>

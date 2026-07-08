@@ -6,16 +6,20 @@ import { SiteFooter } from "@/components/site-footer";
 import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { ContentSearch } from "@/components/content/search";
 import { getAllTutorials, getAllTutorialCategories } from "@/lib/content";
-import { generateMetadata as genMeta } from "@/lib/seo";
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from "@/lib/seo";
+import { siteConfig } from "@/lib/seo-config";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 
+const pageTitle = "Tutorials - Step-by-Step Guides for 1Grow"
+const pageDescription = "Master 1Grow with our comprehensive step-by-step tutorials. Learn training management, rental operations, event planning, and more with practical guides."
+const pageUrl = `${siteConfig.url}/tutorials`
+
 export const metadata: Metadata = genMeta({
-  title: "Tutorials - Step-by-Step Guides",
-  description:
-    "Learn how to set up and use 1Grow with step-by-step tutorials for training management, rental operations, and event planning.",
-  url: "https://1Grow.com/tutorials",
-});
+  title: pageTitle,
+  description: pageDescription,
+  url: pageUrl,
+})
 
 const difficultyColors = {
   beginner: "bg-success/10 text-success",
@@ -23,12 +27,33 @@ const difficultyColors = {
   advanced: "bg-destructive/10 text-destructive",
 };
 
+const schemas = [
+  webpageSchema({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    breadcrumbs: [
+      { name: "Home", url: siteConfig.url },
+      { name: "Tutorials", url: pageUrl },
+    ],
+  }),
+  breadcrumbSchema([
+    { name: "Home", url: siteConfig.url },
+    { name: "Tutorials", url: pageUrl },
+  ]),
+];
+
 export default function TutorialsPage() {
   const tutorials = getAllTutorials();
   const categories = getAllTutorialCategories();
 
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ "@context": "https://schema.org", "@graph": schemas }) }}
+        key="tutorials-schemas"
+      />
       <SiteHeader />
       <main className="px-4 pb-24 pt-28">
         <div className="mx-auto max-w-6xl">
@@ -40,7 +65,7 @@ export default function TutorialsPage() {
             </h1>
             <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
               Step-by-step guides to help you master every feature of
-              1Grow.
+              1Grow. Follow along at your own pace.
             </p>
           </div>
 
@@ -59,14 +84,14 @@ export default function TutorialsPage() {
             </Suspense>
           </div>
 
-          {/* Difficulty filter */}
-          <div className="mb-8 flex flex-wrap gap-2">
+          <div className="mb-8 flex flex-wrap gap-2" role="list" aria-label="Tutorial categories">
             {categories.map((cat) => (
               <span
                 key={cat}
+                role="listitem"
                 className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground"
               >
-                <BookOpen className="size-3" />
+                <BookOpen className="size-3" aria-hidden="true" />
                 {cat}
               </span>
             ))}
@@ -100,11 +125,11 @@ export default function TutorialsPage() {
                 </p>
                 <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
-                    <Clock className="size-3" />
+                    <Clock className="size-3" aria-hidden="true" />
                     {tutorial.estimatedTime}
                   </span>
                   <span>{tutorial.steps.length} steps</span>
-                  <ArrowRight className="ml-auto size-3.5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-auto size-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 </div>
               </Link>
             ))}

@@ -17,7 +17,7 @@ const modules = [
     icon: GraduationCap,
     title: "Training Management",
     description:
-      "Run your academy end to end — capture enquiries, enroll students, schedule batches, track attendance, and collect fees automatically.",
+      "Run your academy end to end — capture enquiries, enroll students, schedule batches, track attendance, and collect fees automatically. Built for dance academies, music schools, tuition centres, yoga studios, martial arts schools, and swimming academies.",
     features: [
       "Lead Management",
       "Student Enrollment",
@@ -42,7 +42,7 @@ const modules = [
     icon: Package,
     title: "Rental Management",
     description:
-      "Track every asset from booking to return. Know what is available, dispatched, or under maintenance in real time.",
+      "Track every asset from booking to return. Know what is available, dispatched, or under maintenance in real time. Designed for equipment rental, costume rental, event supplies, and inventory-heavy businesses.",
     features: [
       "Inventory Management",
       "Availability Calendar",
@@ -53,7 +53,7 @@ const modules = [
     ],
     rows: [
       { name: "Stage Lighting Kit", meta: "Out — returns Sat", tag: "Booked" },
-      { name: "Costume Set — Royal", meta: "Available ×6", tag: "Ready" },
+      { name: "Costume Set — Royal", meta: "Available x6", tag: "Ready" },
       { name: "Sound System Pro", meta: "Maintenance", tag: "Service" },
     ],
     color: "#0099FF",
@@ -66,7 +66,7 @@ const modules = [
     icon: PartyPopper,
     title: "Event Management",
     description:
-      "Plan and deliver flawless events — from the first enquiry and quotation to team assignment, budgets, and closure reports.",
+      "Plan and deliver flawless events — from the first enquiry and quotation to team assignment, budgets, and closure reports. Ideal for event companies, wedding planners, and photography studios.",
     features: [
       "Lead Tracking",
       "Quotation Builder",
@@ -76,7 +76,7 @@ const modules = [
       "Event Closure Reports",
     ],
     rows: [
-      { name: "Sharma Wedding", meta: "₹4.2L budget", tag: "Planning" },
+      { name: "Sharma Wedding", meta: "4.2L budget", tag: "Planning" },
       { name: "Corporate Gala", meta: "12 tasks open", tag: "On Track" },
       { name: "Annual Day Show", meta: "Quote sent", tag: "Pending" },
     ],
@@ -92,7 +92,6 @@ export function Modules() {
   const manualRef = useRef(false);
   const manualTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-cycle every 2.5s unless user manually picked
   useEffect(() => {
     const interval = setInterval(() => {
       if (!manualRef.current) {
@@ -115,22 +114,21 @@ export function Modules() {
   }
 
   return (
-    <section id="modules" className="scroll-mt-24 px-4 py-24">
+    <section id="modules" aria-labelledby="modules-heading" className="scroll-mt-24 px-4 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-accent-green/20 bg-accent-green/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-green">
             Product Modules
           </span>
-          <h2 className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h2 id="modules-heading" className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Powerful modules that work the way you do
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Activate only what you need. Every module is purpose-built and fully integrated with billing, CRM, and analytics.
+            Activate only what you need. Every module is purpose-built and fully integrated with billing, CRM, and analytics. Choose from Training, Rental, or Event management.
           </p>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="mt-14 flex justify-center">
+        <div className="mt-14 flex justify-center" role="tablist" aria-label="Select a product module">
           <div className="relative inline-flex items-center gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-sm">
             {modules.map((m) => {
               const isActive = m.id === active.id;
@@ -138,6 +136,9 @@ export function Modules() {
                 <button
                   key={m.id}
                   onClick={() => handleTabClick(m)}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${m.id}`}
                   className={`relative flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                     isActive
                       ? "shadow-lg"
@@ -153,7 +154,7 @@ export function Modules() {
                       : undefined
                   }
                 >
-                  <m.icon className="size-4" />
+                  <m.icon className="size-4" aria-hidden="true" />
                   <span>{m.tab}</span>
                 </button>
               );
@@ -161,10 +162,12 @@ export function Modules() {
           </div>
         </div>
 
-        {/* Content Card */}
         <div className="mt-10">
           <div
             key={active.id}
+            id={`panel-${active.id}`}
+            role="tabpanel"
+            aria-label={`${active.tab} module details`}
             className="grid items-center gap-8 rounded-3xl border bg-card p-6 sm:p-10 lg:grid-cols-2"
             style={{ borderColor: `${active.color}20` }}
           >
@@ -173,7 +176,7 @@ export function Modules() {
                 className="grid size-12 place-items-center rounded-2xl"
                 style={{ background: `${active.color}15`, color: active.color }}
               >
-                <active.icon className="size-6" />
+                <active.icon className="size-6" aria-hidden="true" />
               </div>
               <h3 className="mt-5 font-heading text-2xl font-bold">
                 {active.title}
@@ -191,29 +194,29 @@ export function Modules() {
                       className="grid size-5 place-items-center rounded-full"
                       style={{ background: `${active.color}15`, color: active.color }}
                     >
-                      <Check className="size-3" />
+                      <Check className="size-3" aria-hidden="true" />
                     </span>
                     {f}
                   </li>
                 ))}
               </ul>
               <a
-                href="#pricing"
+                href="/pricing"
                 className="mt-7 inline-flex h-12 items-center justify-center gap-2.5 whitespace-nowrap rounded-2xl px-7 text-base font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 style={{ background: `linear-gradient(135deg, ${active.color} 0%, ${active.color}CC 100%)`, boxShadow: `0 4px 14px ${active.color}30` }}
+                aria-label={`View ${active.tab} pricing`}
               >
                 Explore {active.tab}
-                <ArrowRight className="size-5 shrink-0" />
+                <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
               </a>
             </div>
 
-            {/* Module Preview */}
             <div className="rounded-2xl border border-border bg-surface-alt p-5">
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-sm font-medium text-foreground/70">
                   {active.title}
                 </p>
-                <CalendarDays className="size-4 text-muted-foreground" />
+                <CalendarDays className="size-4 text-muted-foreground" aria-hidden="true" />
               </div>
               <div className="space-y-2.5">
                 {active.rows.map((row) => (

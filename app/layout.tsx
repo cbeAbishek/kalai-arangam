@@ -2,59 +2,133 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Sora } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { siteConfig } from "@/lib/seo-config";
+import { organizationSchema, websiteSchema, localBusinessSchema, renderJsonLd } from "@/lib/seo";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
+
 const sora = Sora({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
+  display: "swap",
+  preload: true,
 });
 
-export const metadata: Metadata = {
-  title: "1Grow - One Platform for Academies, Rentals & Events",
-  description:
-    "1Grow is a multi-tenant SaaS ERP that helps Training Institutes, Rental Businesses, and Event Companies manage leads, operations, teams, payments, and analytics from a single cloud platform.",
-  keywords: [
-    "ERP",
-    "SaaS",
-    "training institute software",
-    "rental management",
-    "event management",
-    "multi-tenant",
-    "academy management",
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationSchema(),
+    websiteSchema(),
+    localBusinessSchema({
+      name: siteConfig.name,
+      description: siteConfig.description,
+    }),
   ],
+};
+
+export const metadata: Metadata = {
+  title: {
+    default: `${siteConfig.name} - ${siteConfig.tagline}`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  keywords: [
+    "ERP software India",
+    "SaaS ERP",
+    "training institute management software",
+    "rental business management software",
+    "event management software",
+    "academy management system",
+    "multi-tenant ERP",
+    "business operating system",
+    "student management system",
+    "inventory management software",
+    "Indian SaaS",
+    "branch management software",
+    "WhatsApp business integration",
+    "fee collection software",
+    "attendance tracking system",
+  ],
+  metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: siteConfig.url,
+  },
   openGraph: {
-    title: "1Grow - One Platform for Academies, Rentals & Events",
-    description:
-      "Replace spreadsheets, WhatsApp groups, and disconnected software with one intelligent business operating system.",
     type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: `${siteConfig.name} - ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    images: [
+      {
+        url: `${siteConfig.url}${siteConfig.openGraph.image}`,
+        width: siteConfig.openGraph.imageWidth,
+        height: siteConfig.openGraph.imageHeight,
+        alt: siteConfig.openGraph.imageAlt,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} - ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    site: siteConfig.twitterHandle,
+    images: [
+      {
+        url: `${siteConfig.url}${siteConfig.openGraph.image}`,
+        alt: siteConfig.openGraph.imageAlt,
+      },
+    ],
   },
   icons: {
     icon: [
-      {
-        url: "/logo.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/logo.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/logo.svg",
-        type: "image/svg+xml",
-      },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/logo.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: "/logo.png",
+    apple: [
+      { url: "/logo.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: "default",
+  },
+  category: "business",
+  classification: "Business Software",
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   colorScheme: "light dark",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
@@ -73,6 +147,18 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${sora.variable}`}
     >
+      <head>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//vercel.live" />
+        <link rel="preconnect" href="https://vercel.live" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(jsonLd) }}
+          key="json-ld-graph"
+        />
+      </head>
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"

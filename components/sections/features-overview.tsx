@@ -23,11 +23,11 @@ const featureGroups = [
     icon: GraduationCap,
     color: "text-primary",
     features: [
-      { icon: Users, name: "Student Management", desc: "Track every student from enquiry to graduation" },
-      { icon: ClipboardList, name: "Attendance", desc: "Mark attendance in seconds from any device" },
-      { icon: Wallet, name: "Fee Collection", desc: "Automated reminders and payment links" },
-      { icon: CalendarDays, name: "Batch Scheduling", desc: "Manage classes, trainers, and rooms" },
-      { icon: MessageSquare, name: "WhatsApp Notifications", desc: "Instant updates to parents and students" },
+      { icon: Users, name: "Student Management", desc: "Track every student from enquiry through enrollment to graduation" },
+      { icon: ClipboardList, name: "Attendance", desc: "Mark attendance in seconds from any device with one-tap check-in" },
+      { icon: Wallet, name: "Fee Collection", desc: "Automated payment reminders, links, and instant digital receipts" },
+      { icon: CalendarDays, name: "Batch Scheduling", desc: "Manage classes, trainers, and rooms without conflicts" },
+      { icon: MessageSquare, name: "WhatsApp Notifications", desc: "Send instant updates to parents and students automatically" },
     ],
   },
   {
@@ -35,11 +35,11 @@ const featureGroups = [
     icon: Package,
     color: "text-accent-blue",
     features: [
-      { icon: Package, name: "Rental Booking", desc: "Real-time availability and booking calendar" },
-      { icon: CalendarCheck, name: "Event Planning", desc: "From enquiry to closure report" },
-      { icon: FileText, name: "Reports", desc: "Revenue, attendance, and utilization reports" },
-      { icon: Smartphone, name: "Mobile App", desc: "Manage everything from your phone" },
-      { icon: BarChart3, name: "Analytics", desc: "Smart insights for better decisions" },
+      { icon: Package, name: "Rental Booking", desc: "Check real-time availability and manage bookings with a visual calendar" },
+      { icon: CalendarCheck, name: "Event Planning", desc: "Track every event from initial enquiry through to closure report" },
+      { icon: FileText, name: "Reports", desc: "Generate revenue, attendance, and utilization reports in seconds" },
+      { icon: Smartphone, name: "Mobile App", desc: "Access your entire business from any phone or tablet" },
+      { icon: BarChart3, name: "Analytics", desc: "Get smart insights and dashboards for data-driven decisions" },
     ],
   },
   {
@@ -48,10 +48,10 @@ const featureGroups = [
     color: "text-accent-red",
     features: [
       { icon: Users, name: "Event CRM", desc: "Capture every event enquiry and convert leads into confirmed bookings" },
-      { icon: UserCheck, name: "Team Management", desc: "Assign coordinators, vendors, and crew with clear responsibilities" },
-      { icon: CheckSquare, name: "Task Management", desc: "Track every task, milestone, and event checklist in real time" },
-      { icon: Truck, name: "Vendor Management", desc: "Manage suppliers, contracts, and service delivery seamlessly" },
-      { icon: Smartphone, name: "Mobile Access", desc: "Manage events, approvals, and updates from anywhere" },
+      { icon: UserCheck, name: "Team Management", desc: "Assign coordinators, vendors, and crew with clear task ownership" },
+      { icon: CheckSquare, name: "Task Management", desc: "Track every milestone, task, and checklist in real time" },
+      { icon: Truck, name: "Vendor Management", desc: "Manage supplier contracts, service delivery, and payments seamlessly" },
+      { icon: Smartphone, name: "Mobile Access", desc: "Approve tasks, check budgets, and update event status from anywhere" },
     ],
   },
 ];
@@ -60,6 +60,7 @@ export function FeaturesOverview() {
   return (
     <section
       id="features"
+      aria-labelledby="features-heading"
       className="scroll-mt-24 relative overflow-hidden bg-surface-alt px-4 py-24"
     >
       <div
@@ -75,11 +76,16 @@ export function FeaturesOverview() {
           <span className="inline-flex items-center gap-2 rounded-full border border-accent-green/20 bg-accent-green/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-green">
             Features
           </span>
-          <h2 className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Everything you need to run your academy
+          <h2
+            id="features-heading"
+            className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+          >
+            Everything you need to run your academy or business
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Grouped by what matters most - not a list of 100 features.
+            Features organized by function - Admissions, Inventory, and Events -
+            not a scattered list of 100 tools. Each module integrates with
+            billing, CRM, and analytics automatically.
           </p>
         </Reveal>
 
@@ -91,7 +97,7 @@ export function FeaturesOverview() {
                   <div
                     className={`grid size-10 place-items-center rounded-xl bg-muted ${group.color}`}
                   >
-                    <group.icon className="size-5" />
+                    <group.icon className="size-5" aria-hidden="true" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">
                     {group.category}
@@ -104,7 +110,7 @@ export function FeaturesOverview() {
                       className="flex items-center h-20 gap-3 rounded-xl p-3 transition-colors hover:bg-muted/50"
                     >
                       <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-muted text-muted-foreground">
-                        <f.icon className="size-4" />
+                        <f.icon className="size-4" aria-hidden="true" />
                       </div>
                       <div>
                         <p className="text-sm font-semibold">{f.name}</p>

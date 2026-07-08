@@ -16,18 +16,27 @@ const industries = [
 
 export function WhoIsThisFor() {
   return (
-    <section className="px-4 py-24">
+    <section
+      id="industries"
+      aria-labelledby="industries-heading"
+      className="scroll-mt-24 px-4 py-24"
+    >
       <div className="mx-auto max-w-6xl">
         <Reveal className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
             Industry Solutions
           </span>
-          <h2 className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h2
+            id="industries-heading"
+            className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+          >
             Built for your industry
           </h2>
-          <h3 className="text-xl opacity-50 pt-2 font-bold">Industries We Serve</h3>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Discover how different sectors use our products to work smarter, save money and grow.
+            1Grow serves training academies, rental businesses, and event
+            companies across India. Each industry solution includes tailored
+            workflows, reporting, and compliance features specific to your
+            business type.
           </p>
         </Reveal>
 
@@ -37,9 +46,10 @@ export function WhoIsThisFor() {
               <a
                 href={`/solutions#${industry.name.toLowerCase().replace(/\s+/g, '-')}`}
                 className={`group flex flex-col items-center gap-3 rounded-2xl border p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 ${industry.color}`}
+                aria-label={`Learn how 1Grow helps ${industry.name} businesses`}
               >
                 <div className="grid size-12 place-items-center rounded-xl bg-white/80 shadow-sm">
-                  <industry.icon className="size-6" />
+                  <industry.icon className="size-6" aria-hidden="true" />
                 </div>
                 <p className="text-sm font-semibold">{industry.name}</p>
               </a>

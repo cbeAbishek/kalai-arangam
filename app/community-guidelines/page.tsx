@@ -2,18 +2,43 @@ import type { Metadata } from 'next'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Breadcrumbs } from '@/components/content/breadcrumbs'
-import { generateMetadata as genMeta } from '@/lib/seo'
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from '@/lib/seo'
+import { siteConfig } from '@/lib/seo-config'
+
+const pageTitle = 'Community Guidelines'
+const pageDescription = 'Guidelines for participating in the 1Grow community, forums, and support channels. Learn how to contribute respectfully and effectively.'
+const pageUrl = `${siteConfig.url}/community-guidelines`
 
 export const metadata: Metadata = genMeta({
-  title: 'Community Guidelines',
-  description:
-    'Guidelines for participating in the 1Grow community, forums, and support channels.',
-  url: 'https://1Grow.com/community-guidelines',
+  title: pageTitle,
+  description: pageDescription,
+  url: pageUrl,
 })
+
+const schemas = [
+  webpageSchema({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    breadcrumbs: [
+      { name: 'Home', url: siteConfig.url },
+      { name: pageTitle, url: pageUrl },
+    ],
+  }),
+  breadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: pageTitle, url: pageUrl },
+  ]),
+]
 
 export default function CommunityGuidelinesPage() {
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ '@context': 'https://schema.org', '@graph': schemas }) }}
+        key="community-schemas"
+      />
       <SiteHeader />
       <main className="px-4 pb-24 pt-28">
         <div className="mx-auto max-w-3xl">
@@ -61,7 +86,7 @@ export default function CommunityGuidelinesPage() {
               <h2 id="reporting">Reporting Issues</h2>
               <p>
                 If you experience or witness behavior that violates these guidelines, please report it to{' '}
-                <a href="mailto:community@1Grow.com">community@1Grow.com</a>.
+                <a href="mailto:community@1grow.in">community@1grow.in</a>.
                 All reports are handled confidentially.
               </p>
             </section>

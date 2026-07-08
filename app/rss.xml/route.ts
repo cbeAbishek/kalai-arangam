@@ -2,7 +2,7 @@ import { getAllBlogPosts } from '@/lib/content'
 
 export default function rss() {
   const posts = getAllBlogPosts()
-  const baseUrl = 'https://1Grow.com'
+  const baseUrl = 'https://1grow.in'
 
   const items = posts
     .map(

@@ -5,7 +5,8 @@ import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { ContentLayout } from '@/components/content/content-layout'
 import { getLegalPage, getAllLegalPages, extractToc } from '@/lib/content'
-import { generateMetadata as genMeta } from '@/lib/seo'
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from '@/lib/seo'
+import { siteConfig } from '@/lib/seo-config'
 import Link from 'next/link'
 
 export async function generateMetadata({
@@ -18,14 +19,31 @@ export async function generateMetadata({
   if (!page) return {}
 
   return genMeta({
-    title: page.title,
+    title: `${page.title} - Legal`,
     description: page.description,
-    url: `https://1Grow.com/legal/${page.slug}`,
+    url: `${siteConfig.url}/legal/${page.slug}`,
   })
 }
 
 export async function generateStaticParams() {
   return getAllLegalPages().map((p) => ({ slug: p.slug }))
+}
+
+function renderMarkdown(content: string): string {
+  return content
+    .replace(/^### (.+)$/gm, '<h3 id="$1">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 id="$1">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 id="$1">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^/, '<p>')
+    .replace(/$/, '</p>')
+    .replace(/<p><h/g, '<h')
+    .replace(/<\/h(\d)><\/p>/g, '</h$1>')
+    .replace(/<p><ul>/g, '<ul>')
+    .replace(/<\/ul><\/p>/g, '</ul>')
 }
 
 export default async function LegalDetailPage({
@@ -39,6 +57,27 @@ export default async function LegalDetailPage({
 
   const toc = extractToc(page.content)
   const allLegal = getAllLegalPages()
+  const pageUrl = `${siteConfig.url}/legal/${page.slug}`
+
+  const schemas = [
+    webpageSchema({
+      title: `${page.title} - Legal`,
+      description: page.description,
+      url: pageUrl,
+      datePublished: page.lastUpdated,
+      dateModified: page.lastUpdated,
+      breadcrumbs: [
+        { name: 'Home', url: siteConfig.url },
+        { name: 'Legal', url: `${siteConfig.url}/legal` },
+        { name: page.title, url: pageUrl },
+      ],
+    }),
+    breadcrumbSchema([
+      { name: 'Home', url: siteConfig.url },
+      { name: 'Legal', url: `${siteConfig.url}/legal` },
+      { name: page.title, url: pageUrl },
+    ]),
+  ]
 
   const sidebar = (
     <div className="rounded-xl border border-border bg-muted/20 p-4">
@@ -66,6 +105,11 @@ export default async function LegalDetailPage({
 
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ '@context': 'https://schema.org', '@graph': schemas }) }}
+        key="legal-detail-schemas"
+      />
       <SiteHeader />
       <main className="px-4 pb-24 pt-28">
         <div className="mx-auto max-w-4xl">
@@ -83,8 +127,8 @@ export default async function LegalDetailPage({
                   {page.title}
                 </h1>
                 <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="size-3.5" />
-                  Last updated: {page.lastUpdated}
+                  <Calendar className="size-3.5" aria-hidden="true" />
+                  <time dateTime={page.lastUpdated}>Last updated: {page.lastUpdated}</time>
                 </div>
               </header>
 
@@ -96,8 +140,8 @@ export default async function LegalDetailPage({
               <div className="mt-10 rounded-xl border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
                 <p>
                   If you have questions about this policy, contact us at{' '}
-                  <a href="mailto:legal@1Grow.com" className="text-brand hover:underline">
-                    legal@1Grow.com
+                  <a href="mailto:legal@1grow.in" className="text-brand hover:underline">
+                    legal@1grow.in
                   </a>
                 </p>
               </div>
@@ -108,21 +152,4 @@ export default async function LegalDetailPage({
       <SiteFooter />
     </div>
   )
-}
-
-function renderMarkdown(content: string): string {
-  return content
-    .replace(/^### (.+)$/gm, '<h3 id="$1">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 id="$1">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 id="$1">$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^/, '<p>')
-    .replace(/$/, '</p>')
-    .replace(/<p><h/g, '<h')
-    .replace(/<\/h(\d)><\/p>/g, '</h$1>')
-    .replace(/<p><ul>/g, '<ul>')
-    .replace(/<\/ul><\/p>/g, '</ul>')
 }

@@ -35,7 +35,7 @@ const useCases = [
       "Track attendance per class with one-tap check-in",
       "Monitor progress with periodic assessments",
     ],
-    benefit: "Keep every student's journey organized across batches and levels.",
+    benefit: "Keep every student journey organized across batches and levels.",
   },
   {
     title: "How to reduce absent students",
@@ -171,21 +171,23 @@ export default function UseCasesPage() {
               Real business problems, solved
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Every card answers a real business problem. Click to see how 1grow solves it.
+              Every card answers a real business problem. Click to see how 1Grow solves it with step-by-step instructions.
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-4 sm:grid-cols-2">
+          <div className="mt-14 grid gap-4 sm:grid-cols-2" role="list" aria-label="Use cases">
             {useCases.map((uc, i) => {
               const Icon = ICONS[i];
               return (
                 <Reveal key={i} delay={(i % 2) * 0.06}>
                   <button
                     onClick={() => setSelected({ ...uc, index: i })}
+                    role="listitem"
                     className="group w-full text-left flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 hover:border-primary/20"
+                    aria-label={`Learn how to ${uc.title.toLowerCase()}`}
                   >
                     <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-                      <Icon className="size-5" />
+                      <Icon className="size-5" aria-hidden="true" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className={cn("inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider", categoryColors[uc.category] || "bg-primary/10 text-primary border-primary/20")}>
@@ -198,7 +200,7 @@ export default function UseCasesPage() {
                         {uc.description}
                       </p>
                     </div>
-                    <ArrowRight className="size-4 shrink-0 mt-2 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="size-4 shrink-0 mt-2 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" aria-hidden="true" />
                   </button>
                 </Reveal>
               );
@@ -207,7 +209,6 @@ export default function UseCasesPage() {
         </div>
       </main>
 
-      {/* Modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -225,18 +226,22 @@ export default function UseCasesPage() {
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={`How to ${selected.title.toLowerCase()}`}
               className="relative w-full max-w-lg rounded-3xl border border-border bg-card p-6 shadow-2xl sm:p-8"
             >
               <button
                 onClick={() => setSelected(null)}
                 className="absolute right-4 top-4 grid size-8 place-items-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                aria-label="Close"
               >
                 <X className="size-4" />
               </button>
 
               <div className="flex items-center gap-3">
                 <div className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                  {(() => { const Icon = ICONS[selected.index]; return <Icon className="size-5" />; })()}
+                  {(() => { const Icon = ICONS[selected.index]; return <Icon className="size-5" aria-hidden="true" />; })()}
                 </div>
                 <div>
                   <span className={cn("inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider", categoryColors[selected.category] || "bg-primary/10 text-primary border-primary/20")}>
@@ -266,7 +271,7 @@ export default function UseCasesPage() {
 
               <div className="mt-6 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
                 <div className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-500" />
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-500" aria-hidden="true" />
                   <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                     {selected.benefit}
                   </p>
@@ -277,9 +282,10 @@ export default function UseCasesPage() {
                 <a
                   href="/wishlist"
                   className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md"
+                  aria-label="Get early access to 1Grow"
                 >
                   Get Early Access
-                  <ChevronRight className="size-4" />
+                  <ChevronRight className="size-4" aria-hidden="true" />
                 </a>
                 <button
                   onClick={() => setSelected(null)}

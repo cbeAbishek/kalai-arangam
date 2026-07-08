@@ -1,113 +1,162 @@
+import { siteConfig } from './seo-config'
+import type { Metadata } from 'next'
+
 export interface SeoMetadata {
   title: string
   description: string
   url: string
   image?: string
+  imageAlt?: string
   type?: 'website' | 'article'
   publishedAt?: string
   updatedAt?: string
   author?: string
+  robots?: string
 }
 
-export function generateMetadata(seo: SeoMetadata) {
-  const siteName = '1Grow'
+export function generateMetadata(seo: SeoMetadata): Metadata {
+  const siteName = siteConfig.name
   const title = seo.title.includes(siteName) ? seo.title : `${seo.title} | ${siteName}`
+  const description = seo.description
+  const image = seo.image ?? siteConfig.openGraph.image
+  const imageAlt = seo.imageAlt ?? siteConfig.openGraph.imageAlt
 
   return {
     title,
-    description: seo.description,
+    description,
+    robots: seo.robots ?? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
+    alternates: {
+      canonical: seo.url,
+    },
     openGraph: {
       title,
-      description: seo.description,
+      description,
       url: seo.url,
       siteName,
-      images: seo.image ? [{ url: seo.image, width: 1200, height: 630 }] : [],
+      locale: siteConfig.locale,
       type: seo.type ?? 'website',
+      images: image
+        ? [
+            {
+              url: image.startsWith('http') ? image : `${siteConfig.url}${image}`,
+              width: siteConfig.openGraph.imageWidth,
+              height: siteConfig.openGraph.imageHeight,
+              alt: imageAlt,
+            },
+          ]
+        : [],
       ...(seo.publishedAt && { publishedTime: seo.publishedAt }),
       ...(seo.updatedAt && { modifiedTime: seo.updatedAt }),
       ...(seo.author && { authors: [seo.author] }),
     },
     twitter: {
-      card: 'summary_large_image' as const,
+      card: 'summary_large_image',
       title,
-      description: seo.description,
-      images: seo.image ? [seo.image] : [],
-    },
-    alternates: {
-      canonical: seo.url,
+      description,
+      site: siteConfig.twitterHandle,
+      images: image
+        ? [
+            {
+              url: image.startsWith('http') ? image : `${siteConfig.url}${image}`,
+              alt: imageAlt,
+            },
+          ]
+        : [],
     },
   }
 }
 
-export function generateOrganizationSchema() {
+export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '1Grow',
-    url: 'https://1Grow.com',
-    logo: 'https://1Grow.com/icon.svg',
-    description:
-      'Multi-tenant SaaS ERP for Training Institutes, Rental Businesses, and Event Management Companies.',
-    sameAs: [],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'customer service',
-      email: 'support@1Grow.com',
+    '@id': `${siteConfig.url}/#organization`,
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteConfig.url}${siteConfig.logo}`,
+      width: 512,
+      height: 512,
     },
+    description: siteConfig.description,
+    foundingDate: '2024',
+    email: siteConfig.company.email,
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: siteConfig.company.address.addressCountry,
+    },
+    sameAs: Object.values(siteConfig.social).filter(Boolean),
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        email: siteConfig.company.email,
+        availableLanguage: ['English', 'Tamil', 'Hindi'],
+      },
+    ],
   }
 }
 
-export function generateWebSiteSchema() {
+export function websiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: '1Grow',
-    url: 'https://1Grow.com',
+    '@id': `${siteConfig.url}/#website`,
+    url: siteConfig.url,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    publisher: { '@id': `${siteConfig.url}/#organization` },
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://1Grow.com/search?q={search_term_string}',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteConfig.url}/search?q={search_term_string}`,
+      },
       'query-input': 'required name=search_term_string',
     },
+    inLanguage: siteConfig.locale,
   }
 }
 
-export function generateArticleSchema(post: {
+export function webpageSchema({
+  title,
+  description,
+  url,
+  breadcrumbs,
+  datePublished,
+  dateModified,
+}: {
   title: string
   description: string
-  publishedAt: string
-  updatedAt?: string
-  author: string
   url: string
-  image?: string
+  breadcrumbs?: { name: string; url: string }[]
+  datePublished?: string
+  dateModified?: string
 }) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt ?? post.publishedAt,
-    author: {
-      '@type': 'Person',
-      name: post.author,
-    },
-    url: post.url,
-    image: post.image,
-    publisher: {
-      '@type': 'Organization',
-      name: '1Grow',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://1Grow.com/icon.svg',
-      },
-    },
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    isPartOf: { '@id': `${siteConfig.url}/#website` },
+    about: { '@id': `${siteConfig.url}/#organization` },
+    datePublished: datePublished ?? new Date().toISOString().split('T')[0],
+    dateModified: dateModified ?? new Date().toISOString().split('T')[0],
+    breadcrumb: breadcrumbs?.length
+      ? { '@id': `${url}#breadcrumb` }
+      : undefined,
+    inLanguage: siteConfig.locale,
   }
 }
 
-export function generateBreadcrumbSchema(items: { name: string; url: string }[]) {
+export function breadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${items[items.length - 1]?.url ?? siteConfig.url}#breadcrumb`,
     itemListElement: items.map((item, i) => ({
       '@type': 'ListItem',
       position: i + 1,
@@ -117,10 +166,49 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
   }
 }
 
-export function generateFaqSchema(faqs: { question: string; answer: string }[]) {
+export function articleSchema(post: {
+  title: string
+  description: string
+  publishedAt: string
+  updatedAt?: string
+  author: string
+  authorUrl?: string
+  url: string
+  image?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${post.url}#article`,
+    headline: post.title,
+    description: post.description,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': post.url },
+    author: {
+      '@type': 'Person',
+      name: post.author,
+      url: post.authorUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteConfig.url}/#organization`,
+    },
+    image: post.image
+      ? {
+          '@type': 'ImageObject',
+          url: post.image.startsWith('http') ? post.image : `${siteConfig.url}${post.image}`,
+        }
+      : undefined,
+    wordCount: post.description.split(/\s+/).length,
+  }
+}
+
+export function faqSchema(faqs: { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    '@id': `${siteConfig.url}/faq`,
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
@@ -130,4 +218,125 @@ export function generateFaqSchema(faqs: { question: string; answer: string }[]) 
       },
     })),
   }
+}
+
+export function howToSchema({
+  name,
+  description,
+  steps,
+  totalTime,
+  image,
+}: {
+  name: string
+  description: string
+  steps: { name: string; text: string; image?: string; url?: string }[]
+  totalTime?: string
+  image?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    ...(totalTime && { totalTime }),
+    ...(image && { image: { '@type': 'ImageObject', url: image } }),
+    step: steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.image && { image: { '@type': 'ImageObject', url: step.image } }),
+      ...(step.url && { url: step.url }),
+    })),
+  }
+}
+
+export function productSchema({
+  name,
+  description,
+  price,
+  priceCurrency = 'INR',
+  category,
+}: {
+  name: string
+  description: string
+  price: number
+  priceCurrency?: string
+  category?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    description,
+    category,
+    offers: {
+      '@type': 'Offer',
+      price,
+      priceCurrency,
+      availability: 'https://schema.org/PreOrder',
+      url: `${siteConfig.url}/pricing`,
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+    },
+  }
+}
+
+export function softwareAppSchema({
+  name,
+  description,
+  operatingSystem = 'Web, Android, iOS',
+  applicationCategory = 'BusinessApplication',
+}: {
+  name: string
+  description: string
+  operatingSystem?: string
+  applicationCategory?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name,
+    description,
+    operatingSystem,
+    applicationCategory,
+    offers: {
+      '@type': 'Offer',
+      price: '999',
+      priceCurrency: 'INR',
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+    },
+  }
+}
+
+export function localBusinessSchema({
+  name,
+  description,
+  image,
+  priceRange = '₹999-₹2,499',
+}: {
+  name: string
+  description: string
+  image?: string
+  priceRange?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${siteConfig.url}/#localbusiness`,
+    name,
+    description,
+    url: siteConfig.url,
+    ...(image && { image: { '@type': 'ImageObject', url: image } }),
+    priceRange,
+    email: siteConfig.company.email,
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'IN',
+    },
+    sameAs: Object.values(siteConfig.social).filter(Boolean),
+  }
+}
+
+export function renderJsonLd(data: Record<string, unknown>): string {
+  return JSON.stringify(data, null, 2)
 }

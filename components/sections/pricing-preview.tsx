@@ -4,17 +4,17 @@ import { ArrowRight, Check } from "lucide-react";
 const plans = [
   {
     name: "Solo Module",
-    price: "₹999",
+    price: "\u20B9999",
     period: "/month",
-    description: "Choose any one module",
+    description: "Choose any one module - Training, Rental, or Event",
     features: ["5 Staff Users", "1 Branch", "5 GB Storage", "500 Records"],
     highlight: false,
   },
   {
     name: "Business Plan",
-    price: "₹1,899",
+    price: "\u20B91,899",
     period: "/month",
-    description: "Choose any two modules",
+    description: "Choose any two modules with advanced features",
     features: [
       "15 Staff Users",
       "3 Branches",
@@ -26,9 +26,9 @@ const plans = [
   },
   {
     name: "Complete Plan",
-    price: "₹2,499",
+    price: "\u20B92,499",
     period: "/month",
-    description: "All modules included",
+    description: "All modules included with premium features",
     features: [
       "50 Staff Users",
       "10 Branches",
@@ -43,6 +43,7 @@ export function PricingPreview() {
   return (
     <section
       id="pricing"
+      aria-labelledby="pricing-heading"
       className="scroll-mt-24 relative overflow-hidden bg-surface-alt px-4 py-24"
     >
       <div
@@ -54,11 +55,15 @@ export function PricingPreview() {
           <span className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/20 bg-accent-cyan/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-cyan">
             Pricing
           </span>
-          <h2 className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h2
+            id="pricing-heading"
+            className="mt-5 text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+          >
             Simple, transparent pricing
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Start with a 20-day free trial - no credit card required.
+            Start with a 20-day free trial - no credit card required. Pay only
+            for what you use, scale as you grow.
           </p>
         </Reveal>
 
@@ -93,7 +98,7 @@ export function PricingPreview() {
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm">
                       <span className="grid size-4 shrink-0 place-items-center rounded-full bg-accent-green/15 text-accent-green">
-                        <Check className="size-3" />
+                        <Check className="size-3" aria-hidden="true" />
                       </span>
                       {f}
                     </li>
@@ -114,24 +119,15 @@ export function PricingPreview() {
                         }
                       : undefined
                   }
+                  aria-label={`View full details for ${plan.name}`}
                 >
                   Get started
-                  <ArrowRight className="size-4" />
+                  <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>
             </Reveal>
           ))}
-        </div>Share
-
-        {/* <Reveal className="mt-8 text-center">
-          <a
-            href="/pricing"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-          >
-            View all pricing details
-            <ArrowRight className="size-4" />
-          </a>
-        </Reveal> */}
+        </div>
       </div>
     </section>
   );

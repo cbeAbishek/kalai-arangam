@@ -19,7 +19,7 @@ import {
 import { cn } from '@/lib/utils'
 
 const contactMethods = [
-  { icon: Mail, label: 'Email', value: 'support@1grow.com', href: 'mailto:support@1grow.com', color: 'text-blue-500 bg-blue-500/10' },
+  { icon: Mail, label: 'Email', value: 'support@1grow.in', href: 'mailto:support@1grow.in', color: 'text-blue-500 bg-blue-500/10' },
   { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us', href: 'https://wa.me/919566372450', color: 'text-emerald-500 bg-emerald-500/10' },
   { icon: Phone, label: 'Phone', value: '+91 95663 72450', href: 'tel:+919566372450', color: 'text-amber-500 bg-amber-500/10' },
   { icon: MapPin, label: 'Location', value: 'Tamil Nadu, India', href: '#', color: 'text-rose-500 bg-rose-500/10' },

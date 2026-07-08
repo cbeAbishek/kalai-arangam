@@ -1,4 +1,4 @@
-import type { BlogPost, Tutorial, DocPage, LegalPage, TocItem } from './types'
+import type { BlogPost, Tutorial, LegalPage, TocItem } from './types'
 
 function extractToc(content: string): TocItem[] {
   const headings = content.match(/^#{1,3}\s+.+$/gm) ?? []
@@ -77,37 +77,6 @@ export function getAllTutorials(): Tutorial[] {
 
 export function getTutorial(slug: string): Tutorial | undefined {
   return getAllTutorials().find((t) => t.slug === slug)
-}
-
-export function getAllDocs(): DocPage[] {
-  try {
-    return require('@/data/docs/docs.json') as DocPage[]
-  } catch {
-    return []
-  }
-}
-
-export function getDoc(slug: string): DocPage | undefined {
-  return getAllDocs().find((d) => d.slug === slug)
-}
-
-export function getDocsByGroup(group: string): DocPage[] {
-  return getAllDocs()
-    .filter((d) => d.group === group)
-    .sort((a, b) => a.order - b.order)
-}
-
-export function getDocGroups(): string[] {
-  return [...new Set(getAllDocs().map((d) => d.group))]
-}
-
-export function getDocPrevNext(slug: string): { prev?: DocPage; next?: DocPage } {
-  const all = getAllDocs().sort((a, b) => a.order - b.order)
-  const idx = all.findIndex((d) => d.slug === slug)
-  return {
-    prev: idx > 0 ? all[idx - 1] : undefined,
-    next: idx < all.length - 1 ? all[idx + 1] : undefined,
-  }
 }
 
 export function getLegalPage(slug: string): LegalPage | undefined {

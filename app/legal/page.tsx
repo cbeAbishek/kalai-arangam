@@ -5,20 +5,45 @@ import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Breadcrumbs } from '@/components/content/breadcrumbs'
 import { getAllLegalPages } from '@/lib/content'
-import { generateMetadata as genMeta } from '@/lib/seo'
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from '@/lib/seo'
+import { siteConfig } from '@/lib/seo-config'
+
+const pageTitle = 'Legal - Policies & Terms'
+const pageDescription = 'Access 1Grow legal documents including Privacy Policy, Terms of Service, Refund Policy, Cookie Policy, and other legal agreements governing platform use.'
+const pageUrl = `${siteConfig.url}/legal`
 
 export const metadata: Metadata = genMeta({
-  title: 'Legal',
-  description:
-    'Legal documents, policies, and terms for 1Grow.',
-  url: 'https://1Grow.com/legal',
+  title: pageTitle,
+  description: pageDescription,
+  url: pageUrl,
 })
+
+const schemas = [
+  webpageSchema({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    breadcrumbs: [
+      { name: 'Home', url: siteConfig.url },
+      { name: 'Legal', url: pageUrl },
+    ],
+  }),
+  breadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Legal', url: pageUrl },
+  ]),
+]
 
 export default function LegalPage() {
   const pages = getAllLegalPages()
 
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ '@context': 'https://schema.org', '@graph': schemas }) }}
+        key="legal-schemas"
+      />
       <SiteHeader />
       <main className="px-4 pb-24 pt-28">
         <div className="mx-auto max-w-4xl">
@@ -28,7 +53,7 @@ export default function LegalPage() {
             Legal
           </h1>
           <p className="mb-10 max-w-2xl text-lg text-muted-foreground">
-            Policies, terms, and legal documents governing the use of 1Grow.
+            Policies, terms, and legal documents governing the use of 1Grow platform and services.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -39,7 +64,7 @@ export default function LegalPage() {
                 className="group flex items-start gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-lg"
               >
                 <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
-                  <FileText className="size-5" />
+                  <FileText className="size-5" aria-hidden="true" />
                 </div>
                 <div>
                   <h2 className="font-heading text-base font-semibold transition-colors group-hover:text-brand">

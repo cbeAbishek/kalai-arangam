@@ -33,16 +33,6 @@ export interface TutorialStep {
   code?: { language: string; filename?: string; code: string }[]
 }
 
-export interface DocPage {
-  slug: string
-  title: string
-  description: string
-  content: string
-  category: string
-  order: number
-  group: string
-}
-
 export interface LegalPage {
   slug: string
   title: string

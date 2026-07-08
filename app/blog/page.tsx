@@ -7,17 +7,37 @@ import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { ContentSearch } from "@/components/content/search";
 import { NewsletterCta } from "@/components/content/newsletter-cta";
 import { getAllBlogPosts, getAllBlogCategories } from "@/lib/content";
-import { generateMetadata as genMeta } from "@/lib/seo";
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from "@/lib/seo";
+import { siteConfig } from "@/lib/seo-config";
 import { Suspense } from "react";
 
+const pageTitle = "Blog - Academy Management Insights & Product Updates"
+const pageDescription = "Read expert articles about training academy management, rental business operations, event planning best practices, and 1Grow product updates."
+const pageUrl = `${siteConfig.url}/blog`
+
 export const metadata: Metadata = genMeta({
-  title: "Blog - Industry Insights & Product Updates",
-  description:
-    "Read about training academy management, rental business operations, event planning, and product updates from 1Grow.",
-  url: "https://1Grow.com/blog",
-});
+  title: pageTitle,
+  description: pageDescription,
+  url: pageUrl,
+})
 
 const POSTS_PER_PAGE = 9;
+
+const schemas = [
+  webpageSchema({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    breadcrumbs: [
+      { name: "Home", url: siteConfig.url },
+      { name: "Blog", url: pageUrl },
+    ],
+  }),
+  breadcrumbSchema([
+    { name: "Home", url: siteConfig.url },
+    { name: "Blog", url: pageUrl },
+  ]),
+];
 
 export default function BlogPage({
   searchParams,
@@ -29,13 +49,17 @@ export default function BlogPage({
 
   let posts = allPosts;
 
-  // Filtering will be handled client-side via search params
   const page = 1;
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const paginatedPosts = posts.slice(0, POSTS_PER_PAGE);
 
   return (
     <div className="min-h-dvh bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd({ "@context": "https://schema.org", "@graph": schemas }) }}
+        key="blog-schemas"
+      />
       <SiteHeader />
       <main className="px-4 pb-24 pt-28">
         <div className="mx-auto max-w-6xl">
@@ -64,20 +88,20 @@ export default function BlogPage({
                 placeholder="Search articles..."
               />
             </Suspense>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2" role="list" aria-label="Blog categories">
               {categories.map((cat) => (
                 <span
                   key={cat}
+                  role="listitem"
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground"
                 >
-                  <Tag className="size-3" />
+                  <Tag className="size-3" aria-hidden="true" />
                   {cat}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Featured Post */}
           {paginatedPosts[0]?.featured && (
             <Link
               href={`/blog/${paginatedPosts[0].slug}`}
@@ -93,18 +117,17 @@ export default function BlogPage({
                 {paginatedPosts[0].description}
               </p>
               <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{paginatedPosts[0].author.name}</span>
+                <span>By {paginatedPosts[0].author.name}</span>
                 <span>{paginatedPosts[0].publishedAt}</span>
                 <span className="flex items-center gap-1">
-                  <Clock className="size-3.5" />
+                  <Clock className="size-3.5" aria-hidden="true" />
                   {paginatedPosts[0].readingTime} min read
                 </span>
-                <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </div>
             </Link>
           )}
 
-          {/* Post Grid */}
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {paginatedPosts.map((post) => (
               <Link
@@ -124,7 +147,7 @@ export default function BlogPage({
                 <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
                   <span>{post.author.name}</span>
                   <span className="flex items-center gap-1">
-                    <Clock className="size-3" />
+                    <Clock className="size-3" aria-hidden="true" />
                     {post.readingTime} min
                   </span>
                 </div>
