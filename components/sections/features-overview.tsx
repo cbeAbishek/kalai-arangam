@@ -23,11 +23,11 @@ const featureGroups = [
     icon: GraduationCap,
     color: "text-primary",
     features: [
-      { icon: Users, name: "Student Management", desc: "Track every student from enquiry through enrollment to graduation" },
-      { icon: ClipboardList, name: "Attendance", desc: "Mark attendance in seconds from any device with one-tap check-in" },
-      { icon: Wallet, name: "Fee Collection", desc: "Automated payment reminders, links, and instant digital receipts" },
-      { icon: CalendarDays, name: "Batch Scheduling", desc: "Manage classes, trainers, and rooms without conflicts" },
-      { icon: MessageSquare, name: "WhatsApp Notifications", desc: "Send instant updates to parents and students automatically" },
+      { icon: Users, name: "Student Management", desc: "Track each student from enquiry to enrollment to graduation" },
+      { icon: ClipboardList, name: "Attendance", desc: "Mark attendance in seconds from any phone. One tap check-in" },
+      { icon: Wallet, name: "Fee Collection", desc: "Auto send payment links, reminders, and digital receipts" },
+      { icon: CalendarDays, name: "Batch Scheduling", desc: "Plan classes, trainers, and rooms. No more double-bookings" },
+      { icon: MessageSquare, name: "WhatsApp Notifications", desc: "Send updates to parents and students on auto-pilot" },
     ],
   },
   {
@@ -35,11 +35,11 @@ const featureGroups = [
     icon: Package,
     color: "text-accent-blue",
     features: [
-      { icon: Package, name: "Rental Booking", desc: "Check real-time availability and manage bookings with a visual calendar" },
-      { icon: CalendarCheck, name: "Event Planning", desc: "Track every event from initial enquiry through to closure report" },
-      { icon: FileText, name: "Reports", desc: "Generate revenue, attendance, and utilization reports in seconds" },
-      { icon: Smartphone, name: "Mobile App", desc: "Access your entire business from any phone or tablet" },
-      { icon: BarChart3, name: "Analytics", desc: "Get smart insights and dashboards for data-driven decisions" },
+      { icon: Package, name: "Rental Booking", desc: "Check stock in real time. Book with a visual calendar" },
+      { icon: CalendarCheck, name: "Event Planning", desc: "Track each event from enquiry to final closure report" },
+      { icon: FileText, name: "Reports", desc: "Get revenue, attendance, and usage reports in seconds" },
+      { icon: Smartphone, name: "Mobile App", desc: "Run your business from any phone or tablet" },
+      { icon: BarChart3, name: "Analytics", desc: "Smart dashboards that help you make better decisions" },
     ],
   },
   {
@@ -47,11 +47,11 @@ const featureGroups = [
     icon: PartyPopper,
     color: "text-accent-red",
     features: [
-      { icon: Users, name: "Event CRM", desc: "Capture every event enquiry and convert leads into confirmed bookings" },
-      { icon: UserCheck, name: "Team Management", desc: "Assign coordinators, vendors, and crew with clear task ownership" },
-      { icon: CheckSquare, name: "Task Management", desc: "Track every milestone, task, and checklist in real time" },
-      { icon: Truck, name: "Vendor Management", desc: "Manage supplier contracts, service delivery, and payments seamlessly" },
-      { icon: Smartphone, name: "Mobile Access", desc: "Approve tasks, check budgets, and update event status from anywhere" },
+      { icon: Users, name: "Event CRM", desc: "Capture enquiries and turn leads into confirmed bookings" },
+      { icon: UserCheck, name: "Team Management", desc: "Assign vendors, coordinators, and crew in one click" },
+      { icon: CheckSquare, name: "Task Management", desc: "Track milestones, tasks, and checklists in real time" },
+      { icon: Truck, name: "Vendor Management", desc: "Manage supplier contracts, delivery, and payments" },
+      { icon: Smartphone, name: "Mobile Access", desc: "Approve tasks and check budgets from anywhere" },
     ],
   },
 ];
@@ -83,9 +83,8 @@ export function FeaturesOverview() {
             Everything you need to run your academy or business
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Features organized by function - Admissions, Inventory, and Events -
-            not a scattered list of 100 tools. Each module integrates with
-            billing, CRM, and analytics automatically.
+            Features grouped by what you do - Admissions, Inventory, and Events. 
+            Not a random list of 100 tools. Every module works with billing, CRM, and analytics out of the box.
           </p>
         </Reveal>
 

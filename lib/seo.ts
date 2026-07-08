@@ -72,6 +72,7 @@ export function organizationSchema() {
     '@type': 'Organization',
     '@id': `${siteConfig.url}/#organization`,
     name: siteConfig.name,
+    legalName: siteConfig.company.legalName,
     url: siteConfig.url,
     logo: {
       '@type': 'ImageObject',
@@ -80,12 +81,16 @@ export function organizationSchema() {
       height: 512,
     },
     description: siteConfig.description,
-    foundingDate: '2024',
+    foundingDate: siteConfig.company.foundingDate,
     email: siteConfig.company.email,
     address: {
       '@type': 'PostalAddress',
       addressCountry: siteConfig.company.address.addressCountry,
+      addressLocality: siteConfig.company.address.addressLocality,
+      addressRegion: siteConfig.company.address.addressRegion,
     },
+    areaServed: siteConfig.company.areaServed.map((a) => ({ '@type': 'Country', name: a })),
+    knowsAbout: siteConfig.company.knowsAbout,
     sameAs: Object.values(siteConfig.social).filter(Boolean),
     contactPoint: [
       {
@@ -95,6 +100,7 @@ export function organizationSchema() {
         availableLanguage: ['English', 'Tamil', 'Hindi'],
       },
     ],
+    numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 10 },
   }
 }
 
@@ -175,6 +181,8 @@ export function articleSchema(post: {
   authorUrl?: string
   url: string
   image?: string
+  wordCount?: number
+  articleBody?: string
 }) {
   return {
     '@context': 'https://schema.org',
@@ -193,6 +201,7 @@ export function articleSchema(post: {
     publisher: {
       '@type': 'Organization',
       '@id': `${siteConfig.url}/#organization`,
+      name: siteConfig.company.name,
     },
     image: post.image
       ? {
@@ -200,7 +209,13 @@ export function articleSchema(post: {
           url: post.image.startsWith('http') ? post.image : `${siteConfig.url}${post.image}`,
         }
       : undefined,
-    wordCount: post.description.split(/\s+/).length,
+    wordCount: post.wordCount ?? post.description.split(/\s+/).length,
+    articleBody: post.articleBody ?? post.description,
+    inLanguage: siteConfig.locale,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.article-summary'],
+    },
   }
 }
 
@@ -208,15 +223,18 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    '@id': `${siteConfig.url}/faq`,
+    '@id': `${siteConfig.url}/#faq`,
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {
         '@type': 'Answer',
         text: faq.answer,
+        upvoteCount: 0,
       },
     })),
+    inLanguage: siteConfig.locale,
+    about: { '@id': `${siteConfig.url}/#organization` },
   }
 }
 

@@ -98,6 +98,8 @@ export default async function BlogPostPage({
       authorUrl: `${siteConfig.url}/about`,
       url: postUrl,
       image: post.featuredImage,
+      wordCount: post.content.replace(/[#*`>\[\]!_~]/g, '').split(/\s+/).length,
+      articleBody: post.content,
     }),
   ]
 

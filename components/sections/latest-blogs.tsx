@@ -40,7 +40,8 @@ export function LatestBlogs() {
             Latest from the blog
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Expert tips, practical guides, and industry insights for academy owners, rental business operators, and event company managers.
+            Expert tips and guides for academy owners, rental operators, and event managers. 
+            Learn how to save time, cut costs, and grow your business.
           </p>
         </Reveal>
 

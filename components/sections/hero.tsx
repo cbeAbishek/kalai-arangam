@@ -102,10 +102,9 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.12 }}
           className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
-          1Grow is an all-in-one business management platform for Training
-          Institutes, Rental Businesses, and Event Companies. Manage leads,
-          track operations, coordinate teams, process payments, and analyze
-          performance from a single cloud dashboard.
+          1Grow is a cloud ERP for Training Institutes, Rental Businesses, and Event Companies. 
+          Track leads, manage teams, collect payments, and view reports from one dashboard. 
+          Replace WhatsApp, Excel, and paper registers with one smart platform.
         </motion.p>
 
         <motion.div

@@ -17,7 +17,7 @@ const modules = [
     icon: GraduationCap,
     title: "Training Management",
     description:
-      "Run your academy end to end — capture enquiries, enroll students, schedule batches, track attendance, and collect fees automatically. Built for dance academies, music schools, tuition centres, yoga studios, martial arts schools, and swimming academies.",
+      "Run your academy end to end. Capture enquiries, enroll students, schedule batches, track attendance, and collect fees automatically. Works for dance, music, tuition, yoga, martial arts, and swimming academies.",
     features: [
       "Lead Management",
       "Student Enrollment",
@@ -42,7 +42,7 @@ const modules = [
     icon: Package,
     title: "Rental Management",
     description:
-      "Track every asset from booking to return. Know what is available, dispatched, or under maintenance in real time. Designed for equipment rental, costume rental, event supplies, and inventory-heavy businesses.",
+      "Track every item from booking to return. Know what is available, out for delivery, or in maintenance at a glance. Made for equipment rental, costume rental, and event supply businesses.",
     features: [
       "Inventory Management",
       "Availability Calendar",
@@ -66,7 +66,7 @@ const modules = [
     icon: PartyPopper,
     title: "Event Management",
     description:
-      "Plan and deliver flawless events — from the first enquiry and quotation to team assignment, budgets, and closure reports. Ideal for event companies, wedding planners, and photography studios.",
+      "Plan and deliver great events. From first enquiry and quote to team setup, budget tracking, and closure reports. Built for event companies, wedding planners, and photo studios.",
     features: [
       "Lead Tracking",
       "Quotation Builder",
@@ -124,7 +124,7 @@ export function Modules() {
             Powerful modules that work the way you do
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Activate only what you need. Every module is purpose-built and fully integrated with billing, CRM, and analytics. Choose from Training, Rental, or Event management.
+            Turn on only what you need. Each module is built for your industry and connects with billing, CRM, and analytics. Pick Training, Rental, or Event management.
           </p>
         </div>
 

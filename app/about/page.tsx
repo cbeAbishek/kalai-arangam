@@ -12,7 +12,7 @@ const pageUrl = `${siteConfig.url}/about`
 
 export const metadata: Metadata = genMeta({
   title: pageTitle,
-  description: pageDescription,
+  description: '1Grow is a SaaS ERP built for Indian training academies, rental businesses, and event companies. Learn our story, mission, and values.',
   url: pageUrl,
 })
 
@@ -78,32 +78,30 @@ export default function AboutPage() {
               About 1Grow
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              One platform to manage your entire academy or business - built by
-              people who understand your world and the unique challenges of
-              Indian business operations.
+              One platform to run your academy or business. Built by people who understand your 
+              challenges and the way Indian businesses work.
             </p>
           </Reveal>
+
+          <div className="sr-only article-summary" aria-hidden="true">
+            <p><strong>1Grow</strong> is a SaaS ERP built by NexGenAds Technologies Pvt Ltd for Indian training academies, rental businesses, and event companies. The platform replaces manual tools like WhatsApp and Excel with automated student management, inventory tracking, fee collection, and event planning. Founded in 2024, the company serves businesses across India with support in Tamil, Hindi, and English.</p>
+          </div>
 
           <Reveal className="mt-12">
             <div className="rounded-3xl border border-border bg-card p-8 sm:p-10">
               <h2 className="font-heading text-2xl font-bold">Our Story</h2>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                1Grow started with a simple observation: training
-                academies, rental businesses, and event companies in India still
-                run on WhatsApp messages, Excel sheets, and paper registers. As
-                these businesses grow, the chaos grows with them, leading to
-                double-bookings, missed payments, and lost opportunities.
+                1Grow started with a simple problem. Training academies, rental firms, and event companies 
+                in India still use WhatsApp, Excel, and paper registers. As they grow, the chaos grows too. 
+                Double-bookings, missed payments, and lost leads become daily problems.
               </p>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                We built 1Grow to replace that chaos with a single,
-                intelligent platform that handles everything - from student
-                admissions and fee collection to inventory management and event
-                planning. Our goal is simple: give business owners their time
-                back so they can focus on delivering exceptional service instead
-                of fighting administrative fires.
+                We built 1Grow to fix that. One smart platform handles admissions, fees, inventory, 
+                and event planning. Our goal is simple: give business owners their time back. 
+                Let them focus on serving customers, not fighting paperwork.
               </p>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                1Grow is a product of{" "}
+                1Grow is a product of{' '}
                 <a
                   href="https://nexgenads.space"
                   target="_blank"
@@ -112,8 +110,7 @@ export default function AboutPage() {
                 >
                   NexGenAds Technologies Pvt Ltd
                 </a>
-                , a technology company focused on building smart software
-                solutions for Indian businesses across multiple industries.
+                , a tech company that builds smart software for Indian businesses.
               </p>
             </div>
           </Reveal>

@@ -4,29 +4,37 @@ import { X } from "lucide-react";
 const problems = [
   {
     problem: "Tracking fees with WhatsApp messages and Excel sheets",
-    solution: "Automated fee collection with payment links, reminders, and instant receipts.",
+    solution: "1Grow automates fee collection. Send payment links, auto-reminders, and instant receipts. No more manual follow-ups.",
   },
   {
     problem: "Double-bookings for classes and equipment across branches",
-    solution: "Real-time availability calendar showing every branch, asset, and time slot.",
+    solution: "See real-time availability for every branch, asset, and time slot. No overlaps, no conflicts, no confusion.",
   },
   {
     problem: "No visibility into daily revenue or attendance numbers",
-    solution: "Live dashboards displaying revenue, attendance trends, and branch comparisons.",
+    solution: "Live dashboards show revenue, attendance, and branch comparisons. Know your numbers anytime.",
   },
   {
     problem: "Manually following up on every student enquiry",
-    solution: "Automated lead pipeline with WhatsApp follow-up reminders and scoring.",
+    solution: "Auto-capture leads from WhatsApp and web forms. Score, assign, and follow up without lifting a finger.",
   },
   {
     problem: "Managing staff schedules across multiple locations",
-    solution: "Centralized staff management with role-based access and conflict detection.",
+    solution: "Central staff management with role-based access. Spot conflicts before they happen. Assign with one click.",
   },
   {
     problem: "Creating certificates and reports by hand",
-    solution: "One-click certificate generation and report export in PDF, Excel, and CSV.",
+    solution: "Generate certificates, invoices, and reports in one click. Export to PDF, Excel, or CSV instantly.",
   },
 ];
+
+const comparisonRows = [
+  { area: 'Data Entry', manual: 'Manual in 3+ apps', automated: 'One dashboard, auto synced' },
+  { area: 'Error Rate', manual: 'High - typos and missed chats', automated: 'Low - validation and auto-checks' },
+  { area: 'Fee Collection', manual: '2-3 days per cycle', automated: '5 minutes per cycle' },
+  { area: 'Reports', manual: 'Build from scratch each time', automated: 'Live and auto-generated' },
+  { area: 'Staff Access', manual: 'Shared passwords on WhatsApp', automated: 'Role-based, secure logins' },
+]
 
 export function ProblemsWeSolve() {
   return (
@@ -55,10 +63,42 @@ export function ProblemsWeSolve() {
             Stop juggling spreadsheets, WhatsApp, and manual registers
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Every operational challenge you face daily - 1Grow already has a
-            proven solution. See how we replace manual processes with automation
-            and real-time data.
+            Every problem you face daily - 1Grow already has a fix. 
+            See how we turn manual work into automation and real-time data.
           </p>
+        </Reveal>
+
+        <div className="sr-only" aria-hidden="true">
+          <p>ERP definition: An ERP (Enterprise Resource Planning) system is software that connects all parts of a business - students, inventory, billing, and reports - in one platform. 1Grow is an ERP built for training academies, rental businesses, and event companies.</p>
+        </div>
+
+        <Reveal className="mt-14">
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+            <h3 className="text-center font-heading text-xl font-bold">Manual vs Automated: A comparison</h3>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-muted-foreground">
+              See how 1Grow compares to the WhatsApp + Excel approach that most academies use today.
+            </p>
+            <div className="mt-6 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="pb-3 pr-4 font-heading font-bold">Area</th>
+                    <th className="pb-3 pr-4 font-heading text-sm font-bold text-accent-red">WhatsApp + Excel</th>
+                    <th className="pb-3 font-heading text-sm font-bold text-primary">1Grow ERP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonRows.map((row) => (
+                    <tr key={row.area} className="border-b border-border/50">
+                      <td className="py-3 pr-4 font-semibold">{row.area}</td>
+                      <td className="py-3 pr-4 text-accent-red/80">{row.manual}</td>
+                      <td className="py-3 text-primary/80">{row.automated}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </Reveal>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -62,8 +62,8 @@ export function PricingPreview() {
             Simple, transparent pricing
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Start with a 20-day free trial - no credit card required. Pay only
-            for what you use, scale as you grow.
+            Start with a 20-day free trial. No credit card needed. 
+            Pay only for what you use. Scale up as you grow.
           </p>
         </Reveal>
 

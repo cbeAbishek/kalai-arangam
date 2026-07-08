@@ -15,56 +15,56 @@ const reasons = [
     icon: Users,
     title: "Purpose-Built for Academies",
     description:
-      "Not a generic CRM. Built specifically for training institutes, rental businesses, and event companies.",
+      "Not a generic CRM. Built for training institutes, rental firms, and event companies. Our features match how you work.",
     color: "bg-primary/10 text-primary",
   },
   {
     icon: Wallet,
     title: "Automated Fee Collection",
     description:
-      "WhatsApp reminders, payment links, and digital receipts - all on autopilot with zero manual work.",
+      "Send WhatsApp reminders, payment links, and digital receipts on auto-pilot. Zero manual work for your team.",
     color: "bg-accent-blue/10 text-accent-blue",
   },
   {
     icon: Bell,
     title: "WhatsApp Automation",
     description:
-      "Send attendance updates, fee reminders, class schedules, and notifications automatically via WhatsApp.",
+      "Send attendance, fee alerts, class updates, and promotions via WhatsApp. All automatic, all on time.",
     color: "bg-accent-green/10 text-accent-green",
   },
   {
     icon: BarChart3,
     title: "Real-Time Analytics",
     description:
-      "See revenue, attendance, branch comparisons, and performance trends instantly on live dashboards.",
+      "See revenue, attendance, and branch comparisons on live dashboards. Data you can act on, right now.",
     color: "bg-accent-cyan/10 text-accent-cyan",
   },
   {
     icon: ShieldCheck,
     title: "Secure & Private",
     description:
-      "Role-based access control, encrypted data, audit logs, and true multi-tenant isolation for each business.",
+      "Role-based access, encrypted data, audit logs, and true multi-tenant isolation. Each business stays separate.",
     color: "bg-accent-red/10 text-accent-red",
   },
   {
     icon: Layers,
     title: "Multi-Branch Ready",
     description:
-      "Manage unlimited branches from a single dashboard with consolidated reporting and cross-location visibility.",
+      "Manage unlimited branches from one dashboard. See cross-location reports, staff, and inventory in one view.",
     color: "bg-primary/10 text-primary",
   },
   {
     icon: HeadphonesIcon,
     title: "Local Support",
     description:
-      "Customer support available in Tamil, Hindi, and English. We understand the Indian business context.",
+      "Get help in Tamil, Hindi, and English. We understand Indian businesses because we are one.",
     color: "bg-accent-blue/10 text-accent-blue",
   },
   {
     icon: Check,
     title: "20-Day Free Trial",
     description:
-      "Full access to all modules, unlimited staff users, mobile access. No credit card required to start.",
+      "Full access to all modules. Unlimited staff users. Mobile access included. No credit card needed.",
     color: "bg-accent-green/10 text-accent-green",
   },
 ];
@@ -88,9 +88,8 @@ export function WhyChooseUs() {
             Why academies choose 1Grow
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Built by people who understand the academy business. Our platform
-            delivers measurable improvements in efficiency, revenue tracking,
-            and team coordination.
+            Built by people who know the academy business. 1Grow helps you save time, track revenue, 
+            and keep your team on the same page. <strong className="text-foreground">Here is why academies pick us.</strong>
           </p>
         </Reveal>
 

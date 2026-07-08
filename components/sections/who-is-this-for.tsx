@@ -33,10 +33,9 @@ export function WhoIsThisFor() {
             Built for your industry
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            1Grow serves training academies, rental businesses, and event
-            companies across India. Each industry solution includes tailored
-            workflows, reporting, and compliance features specific to your
-            business type.
+            1Grow works for training academies, rental firms, and event planners across India. 
+            Each industry gets custom workflows, reports, and tools designed for your business type. 
+            <strong className="text-foreground">Pick your industry below to see how 1Grow helps.</strong>
           </p>
         </Reveal>
 

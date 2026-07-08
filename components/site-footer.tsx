@@ -115,7 +115,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="my-3 px-4 md:px-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm text-muted-foreground">
+      <div className="my-3 px-4 md:px-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-muted-foreground">
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
           <p className="whitespace-nowrap">
             &copy; {currentYear} 1Grow. All rights reserved.
@@ -127,7 +127,8 @@ export function SiteFooter() {
           </div>
         </div>
         <p className="whitespace-nowrap">
-          A product of <a href="https://nexgenads.space" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-medium">NexGenAds Technologies Pvt Ltd</a>
+          Built by <a href="https://nexgenads.space" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-medium">NexGenAds Technologies Pvt Ltd</a>
+          &middot; Last reviewed: {new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
     </footer>
