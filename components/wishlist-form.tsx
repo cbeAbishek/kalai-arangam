@@ -211,16 +211,18 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetchLocation().then((loc) => {
-      setLocation(loc);
-      setLocationLoading(false);
-      if (loc.ipCity) {
-        setData((prev) => ({ ...prev, city: loc.ipCity || "" }));
-      }
-      if (loc.ipRegion) {
-        setData((prev) => ({ ...prev, state: loc.ipRegion || "" }));
-      }
-    });
+    fetchLocation()
+      .then((loc) => {
+        setLocation(loc);
+        setLocationLoading(false);
+        if (loc.ipCity) {
+          setData((prev) => ({ ...prev, city: loc.ipCity || "" }));
+        }
+        if (loc.ipRegion) {
+          setData((prev) => ({ ...prev, state: loc.ipRegion || "" }));
+        }
+      })
+      .catch(() => setLocationLoading(false));
 
     fetch("/api/session")
       .then((r) => r.json())
@@ -352,7 +354,7 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
         })}
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 overflow-hidden">
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -422,20 +424,25 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
           ))}
         </div>
 
-        {step < STEPS.length - 1 ? (
-          <Button
-            onClick={() => setStep((s) => s + 1)}
-            disabled={!canProceed()}
-            className="h-12 rounded-xl px-6 text-sm font-semibold shadow-sm transition-all hover:shadow-md bg-primary text-primary-foreground"
-          >
-            Next
-            <ChevronRight className="ml-1 size-4" />
-          </Button>
-        ) : (
+        <div className="flex items-center gap-2">
+          {step < STEPS.length - 1 && (
+            <Button
+              onClick={() => setStep((s) => s + 1)}
+              disabled={!canProceed()}
+              className="h-12 rounded-xl px-5 text-sm font-semibold shadow-sm transition-all hover:shadow-md bg-primary text-primary-foreground"
+            >
+              Next
+              <ChevronRight className="ml-1 size-4" />
+            </Button>
+          )}
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="h-12 rounded-xl px-6 text-sm font-semibold shadow-sm transition-all hover:shadow-md bg-primary text-primary-foreground"
+            variant={step < STEPS.length - 1 ? "outline" : "default"}
+            className={cn(
+              "h-12 rounded-xl px-5 text-sm font-semibold shadow-sm transition-all hover:shadow-md",
+              step === STEPS.length - 1 && "bg-primary text-primary-foreground"
+            )}
           >
             {isSubmitting ? (
               <>
@@ -444,12 +451,12 @@ export function WishlistForm({ onSubmitSuccess }: WishlistFormProps) {
               </>
             ) : (
               <>
-                Submit
-                <Check className="ml-1 size-4" />
+                {step === STEPS.length - 1 ? 'Finish' : 'Submit'}
+                {step === STEPS.length - 1 ? <Check className="ml-1 size-4" /> : null}
               </>
             )}
           </Button>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -951,9 +958,9 @@ function CustomSelect({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 mt-1 w-full overflow-hidden rounded-xl border border-border bg-card shadow-lg"
+            className="absolute z-[100] mt-1 w-full overflow-visible rounded-xl border border-border bg-card shadow-lg"
           >
-            <div className="max-h-48 overflow-y-auto p-1">
+            <div className="max-h-48 overflow-y-auto scrollbar-hide p-1.5">
               {options.map((opt) => (
                 <button
                   key={opt}
@@ -963,14 +970,14 @@ function CustomSelect({
                     setOpen(false);
                   }}
                   className={cn(
-                    "flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                    "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
                     value === opt
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-muted text-foreground"
                   )}
                 >
-                  {opt}
-                  {value === opt && <Check className="size-3.5" />}
+                  <span className="min-w-0 break-words">{opt}</span>
+                  {value === opt && <Check className="size-4 shrink-0 ml-2" />}
                 </button>
               ))}
             </div>
