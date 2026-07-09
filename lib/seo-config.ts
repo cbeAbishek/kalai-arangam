@@ -30,7 +30,7 @@ export const siteConfig = {
     youtube: 'https://youtube.com/@1Grow',
   },
   openGraph: {
-    image: '/og-image.png',
+    image: '/meta.jpg',
     imageAlt: '1Grow - Intelligent Business Operating System for Training Institutes, Rentals, and Event Companies',
     imageWidth: 1200,
     imageHeight: 630,

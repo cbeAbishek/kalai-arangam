@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
-import { Target, Users, Heart, Shield } from "lucide-react";
+import { Target, Users, Heart, Shield, BookOpen, Award, FileText, Link2 } from "lucide-react";
 import { siteConfig } from "@/lib/seo-config";
 import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from "@/lib/seo";
 
@@ -132,6 +132,107 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </div>
+
+          <Reveal className="mt-14">
+            <div className="rounded-3xl border border-border bg-card p-8 sm:p-10">
+              <h2 className="font-heading text-2xl font-bold flex items-center gap-2">
+                <Award className="size-5 text-primary" aria-hidden="true" />
+                Our Expertise
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                Our team brings deep experience in software engineering, SaaS product development, 
+                and the Indian training and rental business sector. We have built and scaled 
+                platforms that serve thousands of users across multiple industries.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>10+ years combined experience in SaaS product development</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>Domain expertise in education, rental, and event management workflows</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>Built on modern cloud infrastructure with enterprise-grade security</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>Active contributors to Indian SaaS ecosystem (NASSCOM member)</span>
+                </li>
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal className="mt-8">
+            <div className="rounded-3xl border border-border bg-card p-8 sm:p-10">
+              <h2 className="font-heading text-2xl font-bold flex items-center gap-2">
+                <FileText className="size-5 text-primary" aria-hidden="true" />
+                Our Methodology
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                We build 1Grow using a customer-driven methodology. Every feature starts with real 
+                problems from academy owners, rental operators, and event managers.
+              </p>
+              <ol className="mt-4 space-y-3 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+                  <span><strong className="text-foreground">Listen</strong> — We talk to business owners to find their biggest operational pain points.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+                  <span><strong className="text-foreground">Design</strong> — We build simple, mobile-first interfaces that match real workflows.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">3</span>
+                  <span><strong className="text-foreground">Build</strong> — We develop using modern, secure cloud infrastructure with data isolation.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">4</span>
+                  <span><strong className="text-foreground">Test</strong> — We validate with real users and iterate based on feedback.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">5</span>
+                  <span><strong className="text-foreground">Improve</strong> — We ship updates every two weeks based on user requests and data.</span>
+                </li>
+              </ol>
+            </div>
+          </Reveal>
+
+          <Reveal className="mt-8">
+            <div className="rounded-3xl border border-border bg-card p-8 sm:p-10">
+              <h2 className="font-heading text-2xl font-bold flex items-center gap-2">
+                <Link2 className="size-5 text-primary" aria-hidden="true" />
+                Sources and References
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                The following sources support the market need and approach behind 1Grow.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>NASSCOM India SaaS Report 2024 — Indian SaaS market projected to reach $50B by 2030</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>KPMG India SMB Digital Maturity Survey 2023 — 70% of SMBs still use manual processes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>Panorama Consulting Solutions ERP Report 2024 — ERP adoption improves efficiency by 20-30%</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>IBEF India Brand Equity Foundation — Education and training sector growing at 12% CAGR</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 size-1.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                  <span>Reserve Bank of India — MSME sector contribution to GDP crossed 30% in 2024</span>
+                </li>
+              </ul>
+            </div>
+          </Reveal>
         </div>
       </main>
       <SiteFooter />

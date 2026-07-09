@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Clock, Tag, Calendar, ChevronRight, BookOpen, User } from 'lucide-react'
+import { Clock, Tag, Calendar, ChevronRight, BookOpen, User, CheckCircle, ArrowRight } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SocialShare } from '@/components/content/social-share'
@@ -126,6 +126,12 @@ export default async function BlogPostPage({
                   <BookOpen className="size-3" aria-hidden="true" />
                   {post.category}
                 </span>
+                {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-green/20 bg-accent-green/5 px-3 py-1 text-xs font-semibold text-accent-green">
+                    <CheckCircle className="size-3" aria-hidden="true" />
+                    Updated
+                  </span>
+                )}
               </div>
               <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-[2.75rem] md:leading-tight">
                 {post.title}
@@ -138,12 +144,23 @@ export default async function BlogPostPage({
                   <div className="grid size-8 place-items-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                     {post.author.name.charAt(0)}
                   </div>
-                  <span className="font-medium text-foreground">{post.author.name}</span>
+                  <div>
+                    <span className="font-medium text-foreground">{post.author.name}</span>
+                    {post.author.role && (
+                      <p className="text-xs text-muted-foreground">{post.author.role}</p>
+                    )}
+                  </div>
                 </div>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="size-3.5" aria-hidden="true" />
                   <time dateTime={post.publishedAt}>{post.publishedAt}</time>
                 </span>
+                {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle className="size-3.5" aria-hidden="true" />
+                    Updated: <time dateTime={post.updatedAt}>{post.updatedAt}</time>
+                  </span>
+                )}
                 <span className="flex items-center gap-1.5">
                   <Clock className="size-3.5" aria-hidden="true" />
                   {post.readingTime} min read
@@ -156,6 +173,20 @@ export default async function BlogPostPage({
                 />
               </div>
             </header>
+
+            <div className="mb-10 rounded-2xl border border-primary/20 bg-primary/5 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">TL;DR</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{post.description}</p>
+              {post.tags.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {post.tags.map((tag) => (
+                    <span key={tag} className="rounded-full bg-background px-2.5 py-0.5 text-xs text-muted-foreground">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div
               className="prose prose-gray dark:prose-invert max-w-none"

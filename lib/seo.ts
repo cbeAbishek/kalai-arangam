@@ -155,6 +155,10 @@ export function webpageSchema({
       ? { '@id': `${url}#breadcrumb` }
       : undefined,
     inLanguage: siteConfig.locale,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'h2', '.article-summary'],
+    },
   }
 }
 
