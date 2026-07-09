@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next";
+import dynamic from "next/dynamic";
 import Script from "next/script";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Sora } from "next/font/google";
@@ -7,17 +7,21 @@ import { siteConfig } from "@/lib/seo-config";
 import { organizationSchema, websiteSchema, localBusinessSchema, renderJsonLd } from "@/lib/seo";
 import "./globals.css";
 
+const Analytics = dynamic(() =>
+  import("@vercel/analytics/next").then((m) => ({ default: m.Analytics }))
+);
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 
@@ -25,7 +29,7 @@ const sora = Sora({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 
@@ -149,10 +153,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${sora.variable}`}
     >
       <head>
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="//vercel.live" />
         <link rel="preconnect" href="https://vercel.live" />
         <script
           type="application/ld+json"
@@ -169,23 +169,19 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})})}`,
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(typeof window!=='undefined'&&!window.ethereum){window.ethereum=null}}catch(e){}`,
-          }}
-        />
         {process.env.NODE_ENV === "production" && <Analytics />}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=G-LV7DB40J4H`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LV7DB40J4H');`}
+        </Script>
+        <Script id="sw-register" strategy="lazyOnload">
+          {`if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})})}`}
+        </Script>
+        <Script id="ethereum-polyfill" strategy="lazyOnload">
+          {`try{if(typeof window!=='undefined'&&!window.ethereum){window.ethereum=null}}catch(e){}`}
         </Script>
       </body>
     </html>

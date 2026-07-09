@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -15,7 +16,10 @@ import {
   Users,
   Warehouse,
 } from "lucide-react";
-import { DashboardMockup } from "@/components/dashboard-mockup";
+
+const DashboardMockup = dynamic(
+  () => import("@/components/dashboard-mockup").then((m) => ({ default: m.DashboardMockup })),
+);
 
 const heroFeatures = [
   {

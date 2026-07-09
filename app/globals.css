@@ -207,11 +207,6 @@
                 0 0 120px rgba(0, 201, 219, 0.06);
   }
 
-  .glow-cyan {
-    box-shadow: 0 0 60px rgba(0, 201, 219, 0.12),
-                0 0 120px rgba(0, 201, 219, 0.06);
-  }
-
   .card-playful {
     border-radius: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
