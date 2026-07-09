@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -16,10 +15,7 @@ import {
   Users,
   Warehouse,
 } from "lucide-react";
-
-const DashboardMockup = dynamic(
-  () => import("@/components/dashboard-mockup").then((m) => ({ default: m.DashboardMockup })),
-);
+import { DashboardMockup } from "@/components/dashboard-mockup";
 
 const heroFeatures = [
   {
@@ -93,7 +89,7 @@ export function Hero() {
           id="hero-heading"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
+          transition={{ duration: 0.5, delay: 0.05 }}
           className="mx-auto mt-8 max-w-4xl text-balance font-heading text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl"
         >
           Manage your entire business from{" "}
@@ -103,7 +99,7 @@ export function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.12 }}
+          transition={{ duration: 0.5, delay: 0.08 }}
           className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
           1Grow is a cloud ERP for Training Institutes, Rental Businesses, and Event Companies. 
@@ -112,9 +108,9 @@ export function Hero() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.18 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
           className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
         >
           <a
@@ -130,10 +126,7 @@ export function Hero() {
           </a>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.26 }}
+        <div
           className="mt-10 flex flex-wrap items-center justify-center gap-2.5"
           role="list"
           aria-label="Key platform capabilities"
@@ -148,16 +141,10 @@ export function Hero() {
               {f.label}
             </span>
           ))}
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto mt-20 max-w-5xl"
-        aria-hidden="true"
-      >
+      <div className="relative mx-auto mt-20 max-w-5xl" aria-hidden="true">
         <div className="glow-brand rounded-2xl">
           <DashboardMockup />
         </div>
@@ -202,7 +189,7 @@ export function Hero() {
             </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
