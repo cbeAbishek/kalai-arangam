@@ -154,6 +154,7 @@ export default function RootLayout({
     >
       <head>
         <link rel="preconnect" href="https://vercel.live" />
+        <link rel="preload" href="/dashboard-preview.svg" as="image" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: renderJsonLd(jsonLd) }}

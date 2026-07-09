@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -15,7 +16,6 @@ import {
   Users,
   Warehouse,
 } from "lucide-react";
-import { DashboardMockup } from "@/components/dashboard-mockup";
 
 const heroFeatures = [
   {
@@ -85,34 +85,21 @@ export function Hero() {
       </div>
 
       <div className="mx-auto max-w-5xl text-center">
-        <motion.h1
+        <h1
           id="hero-heading"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.05 }}
           className="mx-auto mt-8 max-w-4xl text-balance font-heading text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl"
         >
           Manage your entire business from{" "}
           <span className="text-gradient">one platform</span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.08 }}
-          className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
-        >
+        <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
           1Grow is a cloud ERP for Training Institutes, Rental Businesses, and Event Companies. 
           Track leads, manage teams, collect payments, and view reports from one dashboard. 
           Replace WhatsApp, Excel, and paper registers with one smart platform.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
-        >
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <a
             href="/wishlist"
             target="_blank"
@@ -124,7 +111,7 @@ export function Hero() {
             <Heart className="size-4 shrink-0 sm:size-5" />
             Join Wishlist
           </a>
-        </motion.div>
+        </div>
 
         <div
           className="mt-10 flex flex-wrap items-center justify-center gap-2.5"
@@ -146,14 +133,18 @@ export function Hero() {
 
       <div className="relative mx-auto mt-20 max-w-5xl" aria-hidden="true">
         <div className="glow-brand rounded-2xl">
-          <DashboardMockup />
+          <Image
+            src="/dashboard-preview.svg"
+            alt="1Grow ERP dashboard preview"
+            width={720}
+            height={400}
+            className="w-full h-auto rounded-2xl"
+            priority
+            sizes="(max-width: 768px) 100vw, 720px"
+          />
         </div>
 
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -left-6 top-16 hidden rounded-2xl border border-primary/20 bg-white p-4 shadow-xl shadow-primary/5 backdrop-blur-xl md:block dark:bg-card"
-        >
+        <div className="absolute -left-6 top-16 hidden rounded-2xl border border-primary/20 bg-white p-4 shadow-xl shadow-primary/5 backdrop-blur-xl md:block dark:bg-card">
           <div className="flex items-center gap-2">
             <span className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
               <GraduationCap className="size-4" />
@@ -165,18 +156,9 @@ export function Hero() {
               <p className="text-sm font-semibold">+38 this week</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          animate={{ y: [0, 14, 0] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute -right-6 bottom-20 hidden rounded-2xl border border-accent-green/20 bg-white p-4 shadow-xl shadow-accent-green/5 backdrop-blur-xl md:block dark:bg-card"
-        >
+        <div className="absolute -right-6 bottom-20 hidden rounded-2xl border border-accent-green/20 bg-white p-4 shadow-xl shadow-accent-green/5 backdrop-blur-xl md:block dark:bg-card">
           <div className="flex items-center gap-2">
             <span className="grid size-8 place-items-center rounded-lg bg-accent-green/10 text-accent-green">
               <CreditCard className="size-4" />
@@ -188,7 +170,7 @@ export function Hero() {
               <p className="text-sm font-semibold text-accent-green">₹24,500</p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
