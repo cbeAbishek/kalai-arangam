@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Clock, Tag, ArrowRight, BookOpen } from "lucide-react";
+import { Clock, Tag, ArrowRight, BookOpen, ChevronRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Breadcrumbs } from "@/components/content/breadcrumbs";
@@ -120,10 +120,10 @@ export default function BlogPage({
           {paginatedPosts[0]?.featured && (
             <Link
               href={`/blog/${paginatedPosts[0].slug}`}
-              className="group mb-8 block overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-xl"
+              className="group mb-8 flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-xl lg:flex-row"
             >
               {paginatedPosts[0].featuredImage && (
-                <div className="relative h-48 w-full overflow-hidden bg-muted sm:h-64">
+                <div className="relative w-full shrink-0 overflow-hidden bg-muted lg:aspect-square lg:w-80 xl:w-96">
                   <img
                     src={paginatedPosts[0].featuredImage}
                     alt={paginatedPosts[0].title}
@@ -132,8 +132,8 @@ export default function BlogPage({
                   />
                 </div>
               )}
-              <div className="p-6 sm:p-8">
-                <span className="mb-3 inline-flex items-center rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
+              <div className="flex flex-1 flex-col justify-center p-6 sm:p-8">
+                <span className="mb-3 inline-flex w-fit items-center rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
                   Featured
                 </span>
                 <h2 className="font-heading text-2xl font-bold transition-colors group-hover:text-brand sm:text-3xl">
@@ -142,14 +142,17 @@ export default function BlogPage({
                 <p className="mt-3 max-w-3xl text-muted-foreground">
                   {paginatedPosts[0].description}
                 </p>
-                <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <span>By {paginatedPosts[0].author.name}</span>
                   <span>{paginatedPosts[0].publishedAt}</span>
                   <span className="flex items-center gap-1">
                     <Clock className="size-3.5" aria-hidden="true" />
                     {paginatedPosts[0].readingTime} min read
                   </span>
-                  <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  <span className="ml-auto inline-flex items-center gap-1.5 font-semibold text-brand transition-all group-hover:gap-2.5">
+                    Read more
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </span>
                 </div>
               </div>
             </Link>
@@ -163,7 +166,7 @@ export default function BlogPage({
                 className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-lg"
               >
                 {post.featuredImage && (
-                  <div className="relative h-40 w-full overflow-hidden bg-muted">
+                  <div className="relative aspect-square w-full overflow-hidden bg-muted">
                     <img
                       src={post.featuredImage}
                       alt={post.title}
@@ -188,6 +191,10 @@ export default function BlogPage({
                       <Clock className="size-3" aria-hidden="true" />
                       {post.readingTime} min
                     </span>
+                  </div>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors group-hover:gap-2.5">
+                    Read more
+                    <ChevronRight className="size-4" aria-hidden="true" />
                   </div>
                 </div>
               </Link>

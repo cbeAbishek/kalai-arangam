@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Clock, Tag, Calendar, ChevronRight, BookOpen, User, CheckCircle, ArrowRight } from 'lucide-react'
+import { Clock, Tag, Calendar, ChevronRight, ChevronLeft, BookOpen, User, CheckCircle, ArrowRight } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SocialShare } from '@/components/content/social-share'
@@ -113,10 +113,14 @@ export default async function BlogPostPage({
       <SiteHeader />
       <main className="pt-28 pb-24">
         <div className="mx-auto max-w-4xl px-4">
-          <nav className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground" aria-label="Breadcrumb">
-            <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
-            <ChevronRight className="size-3.5" aria-hidden="true" />
-            <span className="text-foreground font-medium truncate">{post.title}</span>
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <a
+              href="/blog"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-border/80 hover:bg-muted hover:text-foreground hover:shadow-md"
+            >
+              <ChevronLeft className="size-4" aria-hidden="true" />
+              Back to Blog
+            </a>
           </nav>
 
           <article>
@@ -126,7 +130,7 @@ export default async function BlogPostPage({
                   <img
                     src={post.featuredImage}
                     alt={post.title}
-                    className="h-48 w-full object-cover sm:h-64 md:h-80"
+                    className="aspect-[16/9] w-full object-cover"
                     loading="eager"
                   />
                 </div>
