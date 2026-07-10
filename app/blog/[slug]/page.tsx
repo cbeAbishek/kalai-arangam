@@ -121,6 +121,16 @@ export default async function BlogPostPage({
 
           <article>
             <header className="mb-10">
+              {post.featuredImage && (
+                <div className="mb-6 overflow-hidden rounded-2xl border border-border">
+                  <img
+                    src={post.featuredImage}
+                    alt={post.title}
+                    className="h-48 w-full object-cover sm:h-64 md:h-80"
+                    loading="eager"
+                  />
+                </div>
+              )}
               <div className="mb-4 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
                   <BookOpen className="size-3" aria-hidden="true" />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Clock, Tag, ArrowRight, Search } from "lucide-react";
+import { Clock, Tag, ArrowRight, BookOpen } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Breadcrumbs } from "@/components/content/breadcrumbs";
@@ -11,14 +11,15 @@ import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJso
 import { siteConfig } from "@/lib/seo-config";
 import { Suspense } from "react";
 
-const pageTitle = "Blog - Academy Management Insights & Product Updates"
-const pageDescription = "Read expert articles about training academy management, rental business operations, event planning best practices, and 1Grow product updates."
+const pageTitle = "Blog - ERP Tips, Case Studies & Business Automation Guides"
+const pageDescription = "Expert articles on training academy management, rental business operations, event planning, payroll compliance, and SaaS automation for Indian multi-business owners."
 const pageUrl = `${siteConfig.url}/blog`
 
 export const metadata: Metadata = genMeta({
   title: pageTitle,
   description: pageDescription,
   url: pageUrl,
+  image: siteConfig.openGraph.image,
 })
 
 const POSTS_PER_PAGE = 9;
@@ -37,6 +38,20 @@ const schemas = [
     { name: "Home", url: siteConfig.url },
     { name: "Blog", url: pageUrl },
   ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    isPartOf: { '@type': 'WebSite', name: siteConfig.name, url: siteConfig.url },
+    about: {
+      '@type': 'Organization',
+      name: siteConfig.company.name,
+      url: siteConfig.url,
+    },
+    inLanguage: 'en_IN',
+  },
 ];
 
 export default function BlogPage({
@@ -105,25 +120,37 @@ export default function BlogPage({
           {paginatedPosts[0]?.featured && (
             <Link
               href={`/blog/${paginatedPosts[0].slug}`}
-              className="group mb-8 block rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-xl sm:p-8"
+              className="group mb-8 block overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-xl"
             >
-              <span className="mb-3 inline-flex items-center rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
-                Featured
-              </span>
-              <h2 className="font-heading text-2xl font-bold transition-colors group-hover:text-brand sm:text-3xl">
-                {paginatedPosts[0].title}
-              </h2>
-              <p className="mt-3 max-w-3xl text-muted-foreground">
-                {paginatedPosts[0].description}
-              </p>
-              <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
-                <span>By {paginatedPosts[0].author.name}</span>
-                <span>{paginatedPosts[0].publishedAt}</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="size-3.5" aria-hidden="true" />
-                  {paginatedPosts[0].readingTime} min read
+              {paginatedPosts[0].featuredImage && (
+                <div className="relative h-48 w-full overflow-hidden bg-muted sm:h-64">
+                  <img
+                    src={paginatedPosts[0].featuredImage}
+                    alt={paginatedPosts[0].title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="eager"
+                  />
+                </div>
+              )}
+              <div className="p-6 sm:p-8">
+                <span className="mb-3 inline-flex items-center rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
+                  Featured
                 </span>
-                <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                <h2 className="font-heading text-2xl font-bold transition-colors group-hover:text-brand sm:text-3xl">
+                  {paginatedPosts[0].title}
+                </h2>
+                <p className="mt-3 max-w-3xl text-muted-foreground">
+                  {paginatedPosts[0].description}
+                </p>
+                <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                  <span>By {paginatedPosts[0].author.name}</span>
+                  <span>{paginatedPosts[0].publishedAt}</span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="size-3.5" aria-hidden="true" />
+                    {paginatedPosts[0].readingTime} min read
+                  </span>
+                  <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </div>
               </div>
             </Link>
           )}
@@ -133,23 +160,35 @@ export default function BlogPage({
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-lg"
+                className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-border/80 hover:shadow-lg"
               >
-                <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand">
-                  {post.category}
-                </span>
-                <h3 className="font-heading text-base font-semibold transition-colors group-hover:text-brand">
-                  {post.title}
-                </h3>
-                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                  {post.description}
-                </p>
-                <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>{post.author.name}</span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="size-3" aria-hidden="true" />
-                    {post.readingTime} min
+                {post.featuredImage && (
+                  <div className="relative h-40 w-full overflow-hidden bg-muted">
+                    <img
+                      src={post.featuredImage}
+                      alt={post.title}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className="p-5">
+                  <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand">
+                    {post.category}
                   </span>
+                  <h3 className="font-heading text-base font-semibold transition-colors group-hover:text-brand">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                    {post.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
+                    <span>{post.author.name}</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="size-3" aria-hidden="true" />
+                      {post.readingTime} min
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

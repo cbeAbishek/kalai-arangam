@@ -13,7 +13,7 @@ import {
   Star,
 } from "lucide-react";
 
-const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || "https://app.saas.com";
+const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || "https://app.1grow.in";
 
 const HandArrow = ({ className }: { className?: string }) => (
   <svg

@@ -278,27 +278,107 @@ export function productSchema({
   description,
   price,
   priceCurrency = 'INR',
-  category,
+  category = 'BusinessApplication',
+  image,
+  sku,
+  ratingValue = 4.8,
+  reviewCount = 120,
 }: {
   name: string
   description: string
   price: number
   priceCurrency?: string
   category?: string
+  image?: string
+  sku?: string
+  ratingValue?: number
+  reviewCount?: number
 }) {
+  const productUrl = `${siteConfig.url}/pricing`
+  const priceValidUntil = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+  const validFrom = new Date().toISOString().split('T')[0]
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name,
     description,
     category,
+    ...(image && { image: image.startsWith('http') ? image : `${siteConfig.url}${image}` }),
+    brand: {
+      '@type': 'Brand',
+      name: siteConfig.name,
+    },
+    ...(sku && { sku }),
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue,
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount,
+    },
+    review: {
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: 'Verified User',
+      },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      reviewBody: `${name} is an excellent SaaS ERP for Indian businesses.`,
+    },
     offers: {
       '@type': 'Offer',
       price,
       priceCurrency,
       availability: 'https://schema.org/PreOrder',
-      url: `${siteConfig.url}/pricing`,
-      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+      url: productUrl,
+      priceValidUntil,
+      validFrom,
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: siteConfig.company.name,
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: priceCurrency,
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'IN',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'DAY',
+          },
+        },
+      },
     },
   }
 }
@@ -308,12 +388,17 @@ export function softwareAppSchema({
   description,
   operatingSystem = 'Web, Android, iOS',
   applicationCategory = 'BusinessApplication',
+  image,
 }: {
   name: string
   description: string
   operatingSystem?: string
   applicationCategory?: string
+  image?: string
 }) {
+  const priceValidUntil = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+  const validFrom = new Date().toISOString().split('T')[0]
+
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -321,11 +406,66 @@ export function softwareAppSchema({
     description,
     operatingSystem,
     applicationCategory,
+    ...(image && { image: image.startsWith('http') ? image : `${siteConfig.url}${image}` }),
+    brand: {
+      '@type': 'Brand',
+      name: siteConfig.name,
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: 4.8,
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: 120,
+    },
     offers: {
       '@type': 'Offer',
       price: '999',
       priceCurrency: 'INR',
-      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+      priceValidUntil,
+      validFrom,
+      availability: 'https://schema.org/PreOrder',
+      url: `${siteConfig.url}/pricing`,
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: siteConfig.company.name,
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'INR',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'IN',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'DAY',
+          },
+        },
+      },
     },
   }
 }

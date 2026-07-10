@@ -7,7 +7,7 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { PwaInstallButton } from '@/components/pwa-install-button'
 import { cn } from '@/lib/utils'
 
-const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || 'https://app.saas.com'
+const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || 'https://app.1grow.in'
 
 const navLinks = [
   { label: 'Solutions', href: '/solutions' },

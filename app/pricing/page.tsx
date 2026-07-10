@@ -102,20 +102,26 @@ const schemas = [
     name: "1Grow Business Plan",
     description: "Multi-module SaaS ERP for training institutes, rental businesses, and event companies.",
     price: 1899,
+    image: "/meta.jpg",
+    sku: "1GROW-BUSINESS",
   }),
   productSchema({
     name: "1Grow Complete Plan",
     description: "All-inclusive SaaS ERP with AI insights, unlimited records, and priority support.",
     price: 2499,
+    image: "/meta.jpg",
+    sku: "1GROW-COMPLETE",
   }),
   productSchema({
     name: "1Grow Solo Module",
     description: "Single module SaaS ERP for training, rental, or event management.",
     price: 999,
+    image: "/meta.jpg",
+    sku: "1GROW-SOLO",
   }),
 ];
 
-const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || "https://app.saas.com";
+const SAAS_URL = process.env.NEXT_PUBLIC_SAAS_URL || "https://app.1grow.in";
 
 export default function PricingPage() {
   return (

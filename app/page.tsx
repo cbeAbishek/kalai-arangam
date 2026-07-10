@@ -85,12 +85,15 @@ const schemaHowTo = howToSchema({
 const schemaSoftware = softwareAppSchema({
   name: siteConfig.name,
   description: siteConfig.description,
+  image: '/meta.jpg',
 })
 
 const schemaProduct = productSchema({
   name: '1Grow Business Plan',
   description: 'Multi-module SaaS ERP for training institutes, rental businesses, and event companies.',
   price: 1899,
+  image: '/meta.jpg',
+  sku: '1GROW-BUSINESS',
 })
 
 const schemas = [schemaWebPage, schemaBreadcrumb, schemaFaq, schemaHowTo, schemaSoftware, schemaProduct]
