@@ -53,6 +53,22 @@ import {
       answer: 'WhatsApp and Excel are not built for business operations. With 1Grow, you get auto fee reminders, real-time inventory, attendance tracking, and live reports. No manual data entry. No lost messages. Everything is in one place.',
     },
     {
+      question: 'What industries does 1Grow serve?',
+      answer: '1Grow is built for three key industries: Training Institutes (music schools, dance studios, tuition centers, coaching classes), Rental Businesses (equipment, vehicles, venues, party supplies), and Event Companies (wedding planners, corporate events, cultural programs). Each industry gets tailored workflows and features.',
+    },
+    {
+      question: 'How much does 1Grow cost?',
+      answer: '1Grow offers transparent pricing starting at ₹999/month for the Starter plan. The Business plan at ₹1,899/month includes all modules and priority support. Enterprise plans with custom features are available on request. All plans include a 20-day free trial.',
+    },
+    {
+      question: 'Can I migrate from my existing software?',
+      answer: 'Yes. 1Grow supports data import from Excel/CSV files and can integrate with your existing tools. Our onboarding team provides free data migration assistance to ensure a smooth transition with zero data loss.',
+    },
+    {
+      question: 'Does 1Grow support multiple languages?',
+      answer: 'Yes. 1Grow supports English, Tamil, and Hindi. Your team and customers can use the platform in their preferred language. Additional languages are planned for future releases.',
+    },
+    {
       question: 'Can I try 1Grow before paying?',
       answer: 'Yes. Start with a 20-day free trial. You get full access to every feature. Invite your team. Import your data. If it works for you, choose a plan. If not, no charge.',
     },

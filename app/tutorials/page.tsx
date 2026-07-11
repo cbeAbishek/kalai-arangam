@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { ContentSearch } from "@/components/content/search";
 import { getAllTutorials, getAllTutorialCategories } from "@/lib/content";
-import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, renderJsonLd } from "@/lib/seo";
+import { generateMetadata as genMeta, webpageSchema, breadcrumbSchema, courseSchema, renderJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/seo-config";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
@@ -41,6 +41,14 @@ const schemas = [
     { name: "Home", url: siteConfig.url },
     { name: "Tutorials", url: pageUrl },
   ]),
+  courseSchema({
+    name: "1Grow Business Management Training",
+    description: "Comprehensive training on using 1Grow for training institute management, rental business operations, and event company workflows. Learn step-by-step with practical tutorials.",
+    url: pageUrl,
+    duration: "PT2H",
+    courseMode: "online",
+    outcome: "Master 1Grow platform features including student management, fee collection, inventory tracking, and event planning",
+  }),
 ];
 
 export default function TutorialsPage() {

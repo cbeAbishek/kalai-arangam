@@ -82,6 +82,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   alternates: {
     canonical: siteConfig.url,
+    languages: {
+      'en-IN': siteConfig.url,
+      'en': siteConfig.url,
+      'ta': siteConfig.url,
+      'hi': siteConfig.url,
+    },
   },
   openGraph: {
     type: "website",
@@ -178,6 +184,14 @@ export default function RootLayout({
         <Script id="google-analytics" strategy="lazyOnload">
           {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LV7DB40J4H');`}
         </Script>
+        <Script id="yandex-metrika" strategy="lazyOnload">
+          {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=110593502','ym');ym(110593502,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:'dataLayer',referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});`}
+        </Script>
+        <noscript>
+          <div>
+            <img src="https://mc.yandex.ru/watch/110593502" style={{ position: 'absolute', left: '-9999px' }} alt="" />
+          </div>
+        </noscript>
         <Script id="sw-register" strategy="lazyOnload">
           {`if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})})}`}
         </Script>

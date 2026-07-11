@@ -499,6 +499,171 @@ export function localBusinessSchema({
   }
 }
 
+export function courseSchema({
+  name,
+  description,
+  url,
+  provider,
+  duration,
+  courseMode = 'online',
+  image,
+  prerequisites,
+  outcome,
+}: {
+  name: string
+  description: string
+  url: string
+  provider?: string
+  duration?: string
+  courseMode?: string
+  image?: string
+  prerequisites?: string
+  outcome?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name,
+    description,
+    url,
+    provider: {
+      '@type': 'Organization',
+      name: provider ?? siteConfig.company.name,
+      url: siteConfig.url,
+    },
+    ...(duration && { timeRequired: duration }),
+    courseMode,
+    ...(image && { image: image.startsWith('http') ? image : `${siteConfig.url}${image}` }),
+    educationalLevel: 'Beginner',
+    inLanguage: siteConfig.locale,
+    isAccessibleForFree: true,
+    ...(prerequisites && { prerequisites }),
+    ...(outcome && { learningOutcome: outcome }),
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteConfig.url}/#organization`,
+      name: siteConfig.company.name,
+    },
+  }
+}
+
+export function eventSchema({
+  name,
+  description,
+  startDate,
+  endDate,
+  url,
+  location,
+  organizer,
+  image,
+  eventStatus = 'https://schema.org/EventScheduled',
+  eventAttendanceMode = 'https://schema.org/OnlineEventAttendanceMode',
+}: {
+  name: string
+  description: string
+  startDate: string
+  endDate?: string
+  url: string
+  location?: { name?: string; address?: string; url?: string }
+  organizer?: string
+  image?: string
+  eventStatus?: string
+  eventAttendanceMode?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name,
+    description,
+    startDate,
+    ...(endDate && { endDate }),
+    url,
+    eventStatus,
+    eventAttendanceMode,
+    ...(location && {
+      location: {
+        '@type': 'VirtualLocation',
+        url: location.url ?? url,
+        ...(location.name && { name: location.name }),
+        ...(location.address && {
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: location.address,
+            addressCountry: 'IN',
+          },
+        }),
+      },
+    }),
+    organizer: {
+      '@type': 'Organization',
+      name: organizer ?? siteConfig.company.name,
+      url: siteConfig.url,
+    },
+    ...(image && { image: image.startsWith('http') ? image : `${siteConfig.url}${image}` }),
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url,
+      validFrom: new Date().toISOString().split('T')[0],
+    },
+    performer: {
+      '@type': 'Organization',
+      name: siteConfig.company.name,
+    },
+    inLanguage: siteConfig.locale,
+  }
+}
+
+export function reviewSchema({
+  itemName,
+  itemType,
+  ratingValue,
+  reviewCount,
+  bestRating = 5,
+  reviews,
+}: {
+  itemName: string
+  itemType?: string
+  ratingValue: number
+  reviewCount: number
+  bestRating?: number
+  reviews?: { author: string; rating: number; text: string; date: string }[]
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': itemType ?? 'Product',
+    name: itemName,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue,
+      bestRating,
+      worstRating: 1,
+      reviewCount,
+      ratingCount: reviewCount,
+    },
+    ...(reviews && reviews.length > 0 && {
+      review: reviews.map((review) => ({
+        '@type': 'Review',
+        author: {
+          '@type': 'Person',
+          name: review.author,
+        },
+        datePublished: review.date,
+        reviewBody: review.text,
+        name: `Review by ${review.author}`,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: review.rating,
+          bestRating,
+          worstRating: 1,
+        },
+      })),
+    }),
+  }
+}
+
 export function renderJsonLd(data: Record<string, unknown>): string {
   return JSON.stringify(data, null, 2)
 }
